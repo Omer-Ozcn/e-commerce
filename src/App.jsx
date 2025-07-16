@@ -2,8 +2,9 @@ import { useState } from 'react';
 import './App.css';
 import Footer from "./layout/Footer.jsx";
 import Header from "./layout/Header.jsx";
-import HomeSlider from "./components/Home-top-slider.jsx"; 
+import HomeSlider from "./components/HomeTopSlider.jsx"; 
 import EditorsPick from "./components/EditorsPick.jsx";
+import ProductCard from "./components/ProductCard.jsx";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <main className="flex flex-col items-center">
         <HomeSlider />
         <EditorsPick />
+        <ProductCard /> 
       </main>
       <Footer />
     </>

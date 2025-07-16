@@ -1,7 +1,7 @@
-import editorsPick1 from '../assets/editors-pick-img/editors-pick-1.jpg';
-import editorsPick2 from '../assets/editors-pick-img/editors-pick-2.jpg';
-import editorsPick3 from '../assets/editors-pick-img/editors-pick-3.jpg';
-import editorsPick4 from '../assets/editors-pick-img/editors-pick-4.jpg';
+import editorsPick1 from '../assets/EditorsPickList/editors-pick-1.jpg';
+import editorsPick2 from '../assets/EditorsPickList/editors-pick-2.jpg';
+import editorsPick3 from '../assets/EditorsPickList/editors-pick-3.jpg';
+import editorsPick4 from '../assets/EditorsPickList/editors-pick-4.jpg';
 
 const cards = [
   { img: editorsPick1, label: 'MEN' },

@@ -3,7 +3,7 @@ import products from '../data/products';
 
 const ProductCard = () => {
   return (
-    <div className="flex flex-col items-center py-20 gap-12 w-[328px] bg-white">
+    <div className="flex flex-col items-center py-20 w-[328px] bg-white">
       {/* Kartların üstündeki yazı */}
       <div className="text-center mb-8 flex flex-col items-center gap-2">
         <h4 className="font-montserrat font-normal text-[20px] leading-[30px] text-center tracking-[0.2px] text-[#737373] w-[191px] h-[30px] m-0">

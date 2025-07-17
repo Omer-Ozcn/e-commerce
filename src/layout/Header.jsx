@@ -17,7 +17,7 @@ export default function MobileNavbar() {
     }`;
 
   return (
-    <div className="relative w-[414px] h-[532px] bg-white mx-auto font-[Montserrat] overflow-hidden">
+    <div className="relative w-[414px] h-[532px] bg-white mx-auto font-montserrat overflow-hidden">
       {/* Logo */}
       <div className="absolute top-[23px] left-[32px] w-[129px] h-[58px]">
         <h1 className="text-[24px] font-bold leading-[32px] tracking-[0.1px] text-[#252B42] mt-[13px]">

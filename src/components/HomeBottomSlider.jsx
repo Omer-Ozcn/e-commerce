@@ -28,12 +28,12 @@ export default function HomeBottomSlider() {
   const { image, title, subtitle, description, price } = slides[index];
 
   return (
-    <div className="relative w-[412px] h-[1300px] mx-auto bg-white overflow-hidden">
+    <div className="relative w-[414px] h-[1230px] mx-auto bg-white overflow-hidden">
       {/* Slide content */}
-      <div className="absolute w-[412px] h-[1300px] left-1/2 top-0 -translate-x-1/2 bg-[#23856D]">
-        <div className="flex flex-col items-center pt-[112px] gap-[80px] w-[412px] h-[1252px]">
-          <div className="flex flex-col items-center gap-[30px] py-[48px] w-[599px] h-[1236px]">
-            <div className="flex flex-col items-center gap-[35px] w-[599px] h-[429px]">
+      <div className="absolute w-[414px] h-[1300px] left-1/2 top-0 -translate-x-1/2 bg-[#23856D]">
+        <div className="flex flex-col items-center pt-[112px] gap-[80px] w-[414px] h-[1252px]">
+          <div className="flex flex-col items-center gap-[30px] py-[48px] w-[414px] h-[1236px]">
+            <div className="flex flex-col items-center gap-[35px] w-[414px] h-[429px]">
               <h5 className="font-montserrat font-normal text-[20px] leading-[30px] tracking-[0.2px] text-white w-[154px] h-[30px]">
                 {subtitle}
               </h5>
@@ -54,7 +54,7 @@ export default function HomeBottomSlider() {
                 </button>
               </div>
             </div>
-            {/* Carousel Arrows */}
+            {/* oklar*/}
             <div className="flex flex-row items-center justify-between w-full mt-8">
                 <button
                     onClick={handlePrev}
@@ -63,7 +63,7 @@ export default function HomeBottomSlider() {
                     ❮
                 </button>
 
-                    {/* Right Arrow */}
+                    {/* sağ ok */}
                 <button
                     onClick={handleNext}
                     className="absolute w-[40px] h-[70px] right-[40px] top-[43%] -translate-y-1/2 text-white text-4xl bg-transparent border-none outline-none p-0"

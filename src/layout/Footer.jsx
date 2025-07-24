@@ -10,7 +10,6 @@ import {
 export default function Footer() {
   return (
     <footer className="w-full text-[#252B42] font-montserrat">
-      {/* Bandage + Sosyal Medya - ARKA PLANLI BLOK */}
         <div className="w-full bg-[#FAFAFA]">
             <div className="w-full max-w-[1050px] mx-auto px-4 py-8 flex flex-col md:flex-row md:items-center md:justify-between">
                 <h3 className="text-xl font-bold">Bandage</h3>
@@ -23,11 +22,8 @@ export default function Footer() {
             </div>
         </div>
 
-      {/* Ana içerik */}
       <div className="w-full bg-white max-w-[1050px] mx-auto px-4 py-10 flex flex-col lg:flex-row lg:flex-wrap lg:justify-between gap-10">
-        {/* Link grupları */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-10 lg:gap-[30px] lg:flex-nowrap">
-          {/* Company Info */}
           <div className="flex flex-col gap-4 min-w-[120px]">
             <h4 className="text-base font-bold">Company Info</h4>
             <nav className="flex flex-col gap-2">
@@ -38,7 +34,6 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Legal */}
           <div className="flex flex-col gap-4 min-w-[120px]">
             <h4 className="text-base font-bold">Legal</h4>
             <nav className="flex flex-col gap-2">
@@ -49,7 +44,6 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Features */}
           <div className="flex flex-col gap-4 min-w-[120px]">
             <h4 className="text-base font-bold">Features</h4>
             <nav className="flex flex-col gap-2">
@@ -60,7 +54,6 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Resources */}
           <div className="flex flex-col gap-4 min-w-[120px]">
             <h4 className="text-base font-bold">Resources</h4>
             <nav className="flex flex-col gap-2">
@@ -72,7 +65,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bülten */}
         <div className="flex flex-col gap-4 max-w-[321px] w-full">
           <h4 className="text-base font-bold">Get In Touch</h4>
           <div className="relative w-full h-[58px]">
@@ -89,7 +81,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Alt metin */}
       <div className="w-full bg-[#FAFAFA] py-6">
         <div className="w-full max-w-[1050px] mx-auto px-4 flex justify-center md:justify-between text-sm text-[#737373]">
           <p>&copy; 2025 YourCompany. All rights reserved.</p>

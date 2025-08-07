@@ -16,12 +16,14 @@ import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 export default function Header() {
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-  const closeDropdown = () => setDropdownOpen(false);
 
   return (
     <header className="z-50 relative w-full font-[Montserrat] bg-white">
-      <div className="hidden md:flex justify-between items-center bg-[#252B42] text-white px-10 py-4 text-sm font-bold">
+      <div
+        className={`hidden md:flex justify-between items-center px-10 py-4 text-sm font-bold ${
+          location.pathname.startsWith("/shop") ? "bg-[#23856D]" : "bg-[#252B42]"
+        } text-white`}
+      >
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <Phone className="h-4" />
@@ -55,14 +57,18 @@ export default function Header() {
               Home
             </Link>
 
-            <div className="relative" onMouseLeave={closeDropdown}>
-              <div
-                className="flex items-center gap-1 cursor-pointer"
-                onMouseEnter={toggleDropdown}
-              >
-                <span className={location.pathname.startsWith("/shop") ? "font-normal" : ""}>
+            <div
+              className="relative"
+              onMouseEnter={() => setDropdownOpen(true)}
+              onMouseLeave={() => setDropdownOpen(false)}
+            >
+              <div className="flex items-center gap-1 cursor-pointer">
+                <Link
+                  to="/shop"
+                  className={location.pathname.startsWith("/shop") ? "font-normal" : ""}
+                >
                   Shop
-                </span>
+                </Link>
                 {dropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </div>
 

@@ -1,10 +1,10 @@
 
-import EditorsPick from "../components/EditorsPick";
-import FeaturedProducts from "../components/FeaturedProducts";
-import HomeTopSlider from "../components/HomeTopSlider";
-import HomeBottomSlider from "../components/HomeBottomSlider";
-import Container from "../components/Container";
-import FeaturedPostCard from "../components/FeaturedPostCard";
+import EditorsPick from "../components/home/EditorsPick";
+import FeaturedProducts from "../components/home/FeaturedProducts";
+import HomeTopSlider from "../components/home/HomeTopSlider";
+import HomeBottomSlider from "../components/home/HomeBottomSlider";
+import Container from "../components/home/Container";
+import FeaturedPostCard from "../components/home/FeaturedPostCard";
 
 export default function Home() {
   return (

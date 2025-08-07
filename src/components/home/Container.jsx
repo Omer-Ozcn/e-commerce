@@ -4,7 +4,7 @@ export default function Container() {
       
       <div className="w-[414px] h-[403px] md:h-[682px] md:w-[704px]">
         <img
-          src="container.jpg"
+          src="../home/container.jpg"
           alt="Product visual"
           className="h-full w-auto object-cover overflow-visible -translate-x-7 md:overflow-hidden md:translate-x-0 md:-translate-y-[92px] md:h-[774px]"
         />

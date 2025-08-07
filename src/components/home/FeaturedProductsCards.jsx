@@ -1,4 +1,4 @@
-import featuredProducts from "../data/FeaturedProducts";
+import featuredProducts from "../../data/home/FeaturedProducts";
 
 export default function ProductCards() {
   return (

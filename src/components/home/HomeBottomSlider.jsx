@@ -4,7 +4,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
-export default function ProductCarousel() {
+export default function HomeBottomSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
@@ -41,7 +41,7 @@ export default function ProductCarousel() {
               </div>
             </div>
             <img
-              src="bottom-slider.jpg"
+              src="../home/bottom-slider.jpg"
               alt="Product showcase1"
               className="w-[416px] h-[681px] md:w-[443px] md:h-[685px] md:translate-y-20"
             />
@@ -71,7 +71,7 @@ export default function ProductCarousel() {
               </div>
             </div>
             <img
-              src="bottom-slider.jpg"
+              src="../home/bottom-slider.jpg"
               alt="Product showcase2"
               className="w-[416px] h-[681px] md:w-[443px] md:h-[685px] md:translate-y-20"
             />
@@ -79,7 +79,7 @@ export default function ProductCarousel() {
         </SwiperSlide>
       </Swiper>
 
-      {/* Slide göstergeleri */}
+
       <div className="hidden md:flex absolute bottom-4 left-1/2 -translate-x-1/2 w-[126px] h-[10px] z-50">
         <div
           className={`w-[63px] h-[10px] bg-white ${activeIndex === 0 ? "opacity-100" : "opacity-50"}`}

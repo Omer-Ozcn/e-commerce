@@ -1,7 +1,7 @@
 const featuredProducts = [
   {
     id: 1,
-    imgUrl: "ProductFav/product-fav-1.jpg",
+    imgUrl: "../home/ProductFav/product-fav-1.jpg",
     title: "Graphic Design",
     subtitle: "English Department",
     price: 16.48,
@@ -10,7 +10,7 @@ const featuredProducts = [
   },
   {
     id: 2,
-    imgUrl: "ProductFav/product-fav-2.jpg",
+    imgUrl: "../home/ProductFav/product-fav-2.jpg",
     title: "Graphic Design",
     subtitle: "English Department",
     price: 16.48,
@@ -19,7 +19,7 @@ const featuredProducts = [
   },
   {
     id: 3,
-    imgUrl: "ProductFav/product-fav-3.jpg",
+    imgUrl: "../home/ProductFav/product-fav-3.jpg",
     title: "Graphic Design",
     subtitle: "English Department",
     price: 16.48,
@@ -28,7 +28,7 @@ const featuredProducts = [
   },
   {
     id: 4,
-    imgUrl: "ProductFav/product-fav-4.jpg",
+    imgUrl: "../home/ProductFav/product-fav-4.jpg",
     title: "Graphic Design",
     subtitle: "English Department",
     price: 16.48,
@@ -37,7 +37,7 @@ const featuredProducts = [
   },
   {
     id: 5,
-    imgUrl: "ProductFav/product-fav-5.jpg",
+    imgUrl: "../home/ProductFav/product-fav-5.jpg",
     title: "Graphic Design",
     subtitle: "English Department",
     price: 16.48,
@@ -46,7 +46,7 @@ const featuredProducts = [
   },
   {
     id: 6,
-    imgUrl: "ProductFav/product-fav-6.jpg",
+    imgUrl: "../home/ProductFav/product-fav-6.jpg",
     title: "Graphic Design",
     subtitle: "English Department",
     price: 16.48,
@@ -55,7 +55,7 @@ const featuredProducts = [
   },
   {
     id: 7,
-    imgUrl: "ProductFav/product-fav-7.jpg",
+    imgUrl: "../home/ProductFav/product-fav-7.jpg",
     title: "Graphic Design",
     subtitle: "English Department",
     price: 16.48,
@@ -64,7 +64,7 @@ const featuredProducts = [
   },
   {
     id: 8,
-    imgUrl: "ProductFav/product-fav-8.jpg",
+    imgUrl: "../home/ProductFav/product-fav-8.jpg",
     title: "Graphic Design",
     subtitle: "English Department",
     price: 16.48,

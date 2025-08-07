@@ -18,7 +18,7 @@ export default function HomeTopSlider() {
         }}
       >
         <SwiperSlide>
-          <div className="w-full h-full bg-[url('/top-slider.jpg')] bg-cover bg-[position:50%_center] text-white font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start md:pl-50">
+          <div className="w-full h-full bg-[url('../home/top-slider.jpg')] bg-cover bg-[position:50%_center] text-white font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start md:pl-50">
             <h5 className="font-bold">SUMMER 2025</h5>
             <h2 className="font-bold text-[40px] md:text-[58px]">
               NEW COLLECTION
@@ -33,7 +33,7 @@ export default function HomeTopSlider() {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="w-full h-full bg-[url('/top-slider2.jpg')] bg-cover bg-[position:50%_center] font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start md:pl-50">
+          <div className="w-full h-full bg-[url('../home/top-slider2.jpg')] bg-cover bg-[position:50%_center] font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start md:pl-50">
             <h5 className="font-bold text-[#252B42]">SUMMER 2025</h5>
             <h2 className="font-bold text-[40px] md:text-[58px] text-[#252B42]">
               NEW COLLECTION

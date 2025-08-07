@@ -2,7 +2,7 @@
 const featuredPost = [
   {
     id: 1,
-    imgUrl: "FeaturedPost/featured-post-1.jpg",
+    imgUrl: "../home/FeaturedPost/featured-post-1.jpg",
     title: "Loudest à la Madison #1 (L'integral)",
     explanation:
       "We focus on ergonomics and meeting you where you work. It's only a keystroke away.",
@@ -11,7 +11,7 @@ const featuredPost = [
   },
   {
     id: 2,
-    imgUrl: "FeaturedPost/featured-post-2.jpg",
+    imgUrl: "../home/FeaturedPost/featured-post-2.jpg",
     title: "Loudest à la Madison #1 (L'integral)",
     explanation:
       "We focus on ergonomics and meeting you where you work. It's only a keystroke away.",
@@ -20,7 +20,7 @@ const featuredPost = [
   },
   {
     id: 3,
-    imgUrl: "FeaturedPost/featured-post-3.jpg",
+    imgUrl: "../home/FeaturedPost/featured-post-3.jpg",
     title: "Loudest à la Madison #1 (L'integral)",
     explanation:
       "We focus on ergonomics and meeting you where you work. It's only a keystroke away.",

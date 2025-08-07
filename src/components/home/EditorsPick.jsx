@@ -11,7 +11,7 @@ export default function EditorsPick() {
       </div>
 
       <div className="flex flex-col items-center justify-center gap-6 md:flex-row">
-        <div className="w-[325px] h-[500px] bg-[url(/EditorsPick/editors-pick-1.jpg)] bg-cover bg-center flex flex-col justify-end md:w-[510px]">
+        <div className="w-[325px] h-[500px] bg-[url(../home/EditorsPick/editors-pick-1.jpg)] bg-cover bg-center flex flex-col justify-end md:w-[510px]">
           <Link
             to="/shop/men"
             className="m-7 w-[170px] h-12 bg-white flex items-center justify-center font-bold text-[#252B42]"
@@ -21,7 +21,7 @@ export default function EditorsPick() {
         </div>
 
         <div className="flex flex-col gap-6 md:flex-row">
-          <div className="w-[325px] h-[500px] bg-[url(/EditorsPick/editors-pick-2.jpg)] bg-cover bg-center flex flex-col justify-end md:w-[240px]">
+          <div className="w-[325px] h-[500px] bg-[url(../home/EditorsPick/editors-pick-2.jpg)] bg-cover bg-center flex flex-col justify-end md:w-[240px]">
             <Link
               to="/shop/women"
               className="m-7 w-[170px] h-12 bg-white flex items-center justify-center font-bold text-[#252B42]"
@@ -31,7 +31,7 @@ export default function EditorsPick() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <div className="w-[325px] h-[242px] bg-[url(/EditorsPick/editors-pick-3.jpg)] bg-cover bg-center flex flex-col justify-end md:w-[240px]">
+            <div className="w-[325px] h-[242px] bg-[url(../home/EditorsPick/editors-pick-3.jpg)] bg-cover bg-center flex flex-col justify-end md:w-[240px]">
               <Link
                 to="/shop/accessories"
                 className="m-7 w-[170px] h-12 bg-white flex items-center justify-center font-bold text-[#252B42]"
@@ -40,7 +40,7 @@ export default function EditorsPick() {
               </Link>
             </div>
 
-            <div className="w-[325px] h-[242px] bg-[url(/EditorsPick/editors-pick-4.jpg)] bg-cover bg-center flex flex-col justify-end md:w-[240px]">
+            <div className="w-[325px] h-[242px] bg-[url(../home//EditorsPick/editors-pick-4.jpg)] bg-cover bg-center flex flex-col justify-end md:w-[240px]">
               <Link
                 to="/shop/kids"
                 className="m-7 w-[170px] h-12 bg-white flex items-center justify-center font-bold text-[#252B42]"

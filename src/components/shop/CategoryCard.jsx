@@ -47,11 +47,6 @@ function CategoryCard({ title, subtitle, image }) {
 export default function Shop() {
   return (
     <main className="px-4 py-6 font-[Montserrat] bg-[#FAFAFA]">
-      <div className="max-w-[1088px] mx-auto px-4 mb-6 flex flex-col lg:flex-row items-center lg:items-baseline justify-between">
-        <h1 className="text-2xl lg:text-4xl font-bold text-[#252B42]">Shop</h1>
-        <p className="text-sm lg:text-base text-[#737373] mt-2 lg:mt-0">Home &gt; Shop</p>
-      </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 max-w-[1088px] mx-auto">
         {categories.map((cat, idx) => (
           <CategoryCard

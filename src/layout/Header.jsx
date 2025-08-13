@@ -21,7 +21,9 @@ export default function Header() {
     <header className="z-50 relative w-full font-[Montserrat] bg-white">
       <div
         className={`hidden md:flex justify-between items-center px-10 py-4 text-sm font-bold ${
-          location.pathname.startsWith("/shop") ? "bg-[#23856D]" : "bg-[#252B42]"
+          location.pathname.startsWith("/shop") || location.pathname.startsWith("/product")
+            ? "bg-[#23856D]"
+            : "bg-[#252B42]"
         } text-white`}
       >
         <div className="flex items-center gap-6">

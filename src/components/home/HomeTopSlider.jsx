@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -27,11 +28,15 @@ export default function HomeTopSlider() {
               We know how large objects will act,
               <br className="hidden md:flex" /> but things on a small scale.
             </h4>
-            <button className="h-[62px] w-[221px] bg-[#2DC071] font-bold text-2xl rounded-md cursor-pointer transition-colors duration-300 hover:text-[#2DC071] hover:bg-white hover:border-[#2DC071]">
+            <Link
+              to="/shop" 
+              className="h-[62px] w-[221px] flex items-center justify-center bg-[#2DC071] font-bold text-2xl rounded-md cursor-pointer transition-colors duration-300 hover:text-[#2DC071] hover:bg-white hover:border-[#2DC071]"
+            >
               SHOP NOW
-            </button>
+            </Link>
           </div>
         </SwiperSlide>
+
         <SwiperSlide>
           <div className="w-full h-full bg-[url('../home/top-slider2.jpg')] bg-cover bg-[position:50%_center] font-[Montserrat] flex flex-col items-center justify-center p-20 text-center gap-10 md:bg-center md:text-left md:items-start md:pl-50">
             <h5 className="font-bold text-[#252B42]">SUMMER 2025</h5>
@@ -42,9 +47,12 @@ export default function HomeTopSlider() {
               We know how large objects will act,
               <br className="hidden md:flex text-[#252B42]" /> but things on a small scale.
             </h4>
-            <button className="h-[62px] w-[221px] text-white bg-[#2DC071] font-bold text-2xl rounded-md cursor-pointer transition-colors duration-300 hover:text-[#2DC071] hover:bg-white hover:border-[#2DC071]">
+            <Link
+              to="/shop" 
+              className="h-[62px] w-[221px] flex items-center justify-center text-white bg-[#2DC071] font-bold text-2xl rounded-md cursor-pointer transition-colors duration-300 hover:text-[#2DC071] hover:bg-white hover:border-[#2DC071]"
+            >
               SHOP NOW
-            </button>
+            </Link>
           </div>
         </SwiperSlide>
       </Swiper>

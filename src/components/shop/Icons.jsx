@@ -11,7 +11,7 @@ const logos = [
 
 export default function LogoList() {
   return (
-    <div className="w-full min-w-full bg-[#FAFAFA]"> {/* full width + min width full */}
+    <div className="w-full min-w-full bg-[#FAFAFA]"> 
       <div
         className={`
           mx-auto

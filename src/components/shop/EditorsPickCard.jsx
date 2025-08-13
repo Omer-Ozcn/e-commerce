@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";              // 👈 EKLE
 import editorsPickProducts from "../../data/shop/EditorsPickData";
 import Pagination from "./Pagination";
 import useMediaQuery from "../../hooks/useMediaQuery";
@@ -20,11 +21,15 @@ export default function EditorsPickCard() {
       <div className="max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {currentProducts.map((product) => (
-            <div key={product.id} className="bg-white overflow-hidden">
+            <Link
+              key={product.id}
+              to={`/product/${product.id}`}           // 👈 ROUTE
+              className="bg-white overflow-hidden block group cursor-pointer"
+            >
               <img
                 src={product.imgUrl}
                 alt={product.title}
-                className="object-cover w-[348px] h-[427px] mx-auto sm:w-full sm:h-[350px]"
+                className="object-cover w-[348px] h-[427px] mx-auto sm:w-full sm:h-[350px] transition-transform group-hover:scale-[1.02]"
               />
               <div className="p-4 text-center">
                 <h3 className="text-md font-semibold text-[#252B42]">
@@ -45,11 +50,11 @@ export default function EditorsPickCard() {
                       key={idx}
                       className="w-4 h-4 rounded-full border"
                       style={{ backgroundColor: color }}
-                    ></span>
+                    />
                   ))}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

@@ -2,6 +2,7 @@ import { Switch, Route } from "react-router-dom";
 import Home from "../pages/HomePage";
 import Shop from "../pages/Shop";
 import ProductDetail from "../pages/ProductDetail";  
+import Contact from "../pages/Contact";
 
 export default function PageContent() {
   return (
@@ -16,6 +17,10 @@ export default function PageContent() {
 
       <Route path="/product/:id">        
         <ProductDetail />
+      </Route>
+
+      <Route path="/contact">
+        <Contact />
       </Route>
     </Switch>
   );

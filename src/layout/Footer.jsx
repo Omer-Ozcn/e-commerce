@@ -27,7 +27,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4 min-w-[120px]">
             <h4 className="text-base font-bold">Company Info</h4>
             <nav className="flex flex-col gap-2">
-              <Link to="/" className="font-bold text-sm text-[#737373]">About Us</Link>
+              <Link to="/about" className="font-bold text-sm text-[#737373]">About Us</Link>
               <Link to="/" className="font-bold text-sm text-[#737373]">Carrier</Link>
               <Link to="/" className="font-bold text-sm text-[#737373]">We are hiring</Link>
               <Link to="/" className="font-bold text-sm text-[#737373]">Blog</Link>
@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4 min-w-[120px]">
             <h4 className="text-base font-bold">Legal</h4>
             <nav className="flex flex-col gap-2">
-              <Link to="/" className="font-bold text-sm text-[#737373]">About Us</Link>
+              <Link to="/about" className="font-bold text-sm text-[#737373]">About Us</Link>
               <Link to="/" className="font-bold text-sm text-[#737373]">Carrier</Link>
               <Link to="/" className="font-bold text-sm text-[#737373]">We are hiring</Link>
               <Link to="/" className="font-bold text-sm text-[#737373]">Blog</Link>

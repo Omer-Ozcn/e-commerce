@@ -9,7 +9,7 @@ import {
   ChevronUp,
   Menu,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
@@ -17,11 +17,27 @@ export default function Header() {
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const closeTimer = useRef(null);
+  const openMenu = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setDropdownOpen(true);
+  };
+  const scheduleClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setDropdownOpen(false), 180);
+  };
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
   return (
     <header className="z-50 relative w-full font-[Montserrat] bg-white">
       <div
         className={`hidden md:flex justify-between items-center px-10 py-4 text-sm font-bold ${
-          location.pathname.startsWith("/shop") || location.pathname.startsWith("/product")
+          location.pathname.startsWith("/shop") ||
+          location.pathname.startsWith("/product")
             ? "bg-[#23856D]"
             : "bg-[#252B42]"
         } text-white`}
@@ -61,10 +77,12 @@ export default function Header() {
 
             <div
               className="relative"
-              onMouseEnter={() => setDropdownOpen(true)}
-              onMouseLeave={() => setDropdownOpen(false)}
+              onMouseEnter={openMenu}
+              onMouseLeave={scheduleClose}
+              onFocus={openMenu}
+              onBlur={scheduleClose}
             >
-              <div className="flex items-center gap-1 cursor-pointer">
+              <div className="flex items-center gap-1 cursor-pointer select-none">
                 <Link
                   to="/shop"
                   className={location.pathname.startsWith("/shop") ? "font-normal" : ""}
@@ -75,7 +93,11 @@ export default function Header() {
               </div>
 
               {dropdownOpen && (
-                <div className="absolute left-0 top-full mt-2 w-[396px] h-[272px] bg-white shadow-md border z-50 flex gap-[10px] px-0">
+                <div
+                  className="absolute left-0 top-full mt-2 w-[396px] h-[272px] bg-white shadow-md border z-50 flex gap-[10px] px-0"
+                  onMouseEnter={openMenu}
+                  onMouseLeave={scheduleClose}
+                >
                   <div className="flex flex-col w-[186px]">
                     <div className="flex items-start px-6 py-4 h-[56px]">
                       <Link
@@ -86,24 +108,11 @@ export default function Header() {
                       </Link>
                     </div>
                     <div className="flex flex-col gap-4 px-6 py-4 h-[216px]">
-                      <Link to="/shop/women/bags" className="text-[#737373] text-[14px] font-bold">
-                        Bags
-                      </Link>
-                      <Link to="/shop/women/belts" className="text-[#737373] text-[14px] font-bold">
-                        Belts
-                      </Link>
-                      <Link
-                        to="/shop/women/cosmetics"
-                        className="text-[#737373] text-[14px] font-bold"
-                      >
-                        Cosmetics
-                      </Link>
-                      <Link to="/shop/women/shoes" className="text-[#737373] text-[14px] font-bold">
-                        Shoes
-                      </Link>
-                      <Link to="/shop/women/hats" className="text-[#737373] text-[14px] font-bold">
-                        Hats
-                      </Link>
+                      <Link to="/shop/women/bags" className="text-[#737373] text-[14px] font-bold">Bags</Link>
+                      <Link to="/shop/women/belts" className="text-[#737373] text-[14px] font-bold">Belts</Link>
+                      <Link to="/shop/women/cosmetics" className="text-[#737373] text-[14px] font-bold">Cosmetics</Link>
+                      <Link to="/shop/women/shoes" className="text-[#737373] text-[14px] font-bold">Shoes</Link>
+                      <Link to="/shop/women/hats" className="text-[#737373] text-[14px] font-bold">Hats</Link>
                     </div>
                   </div>
 
@@ -117,21 +126,11 @@ export default function Header() {
                       </Link>
                     </div>
                     <div className="flex flex-col gap-4 px-6 py-4 h-[216px]">
-                      <Link to="/shop/men/bags" className="text-[#737373] text-[14px] font-bold">
-                        Bags
-                      </Link>
-                      <Link to="/shop/men/belts" className="text-[#737373] text-[14px] font-bold">
-                        Belts
-                      </Link>
-                      <Link to="/shop/men/cosmetics" className="text-[#737373] text-[14px] font-bold">
-                        Cosmetics
-                      </Link>
-                      <Link to="/shop/men/shoes" className="text-[#737373] text-[14px] font-bold">
-                        Shoes
-                      </Link>
-                      <Link to="/shop/men/hats" className="text-[#737373] text-[14px] font-bold">
-                        Hats
-                      </Link>
+                      <Link to="/shop/men/bags" className="text-[#737373] text-[14px] font-bold">Bags</Link>
+                      <Link to="/shop/men/belts" className="text-[#737373] text-[14px] font-bold">Belts</Link>
+                      <Link to="/shop/men/cosmetics" className="text-[#737373] text-[14px] font-bold">Cosmetics</Link>
+                      <Link to="/shop/men/shoes" className="text-[#737373] text-[14px] font-bold">Shoes</Link>
+                      <Link to="/shop/men/hats" className="text-[#737373] text-[14px] font-bold">Hats</Link>
                     </div>
                   </div>
                 </div>
@@ -144,6 +143,9 @@ export default function Header() {
             <Link to="/blog" className={location.pathname === "/blog" ? "font-normal" : ""}>
               Blog
             </Link>
+            <Link to="/pricing" className={location.pathname === "/pricing" ? "font-normal" : ""}>
+              Pricing
+            </Link>
             <Link to="/contact" className={location.pathname === "/contact" ? "font-normal" : ""}>
               Contact
             </Link>
@@ -153,11 +155,20 @@ export default function Header() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-4 text-[#252B42] md:text-[#23A6F0]">
-          <Link to="/login" className="hidden md:flex items-center gap-1">
-            <CircleUserRound />
-            <span>Login / Register</span>
-          </Link>
+        <div className="flex items-center gap-4 text-[#252B42]">
+          <div className="hidden md:flex items-center gap-3 mr-2">
+            <Link to="/login" className="flex items-center gap-1 text-[#23A6F0]">
+              <CircleUserRound />
+              <span>Login</span>
+            </Link>
+            <Link
+              to="/signup"
+              className="px-4 py-2 rounded-[5px] bg-[#23A6F0] text-white text-sm font-bold hover:bg-[#1b8ed6] transition"
+            >
+              Sign up
+            </Link>
+          </div>
+
           <Search />
           <Link to="/cart" className="relative">
             <ShoppingCart />
@@ -173,15 +184,14 @@ export default function Header() {
       </div>
 
       <div className="flex items-center justify-between px-6 py-5 md:hidden">
-        <Link
-          to="/"
-          className="font-[Montserrat] text-2xl font-bold text-[#252B42] leading-[1.2]"
-        >
+        <Link to="/" className="font-[Montserrat] text-2xl font-bold text-[#252B42] leading-[1.2]">
           Bandage
         </Link>
 
         <div className="flex items-center gap-5">
-          <CircleUserRound className="w-6 h-6" />
+          <Link to="/login">
+            <CircleUserRound className="w-6 h-6" />
+          </Link>
           <Search className="w-6 h-6" />
           <Link to="/cart" className="relative">
             <ShoppingCart className="w-6 h-6" />
@@ -194,18 +204,12 @@ export default function Header() {
       </div>
 
       <nav className="flex flex-col items-center justify-center gap-6 py-10 text-[#737373] text-xl font-semibold md:hidden">
-        <Link to="/" className={location.pathname === "/" ? "text-[#252B42]" : ""}>
-          Home
-        </Link>
-        <Link to="/product" className={location.pathname === "/product" ? "text-[#252B42]" : ""}>
-          Product
-        </Link>
-        <Link to="/pricing" className={location.pathname === "/pricing" ? "text-[#252B42]" : ""}>
-          Pricing
-        </Link>
-        <Link to="/contact" className={location.pathname === "/contact" ? "text-[#252B42]" : ""}>
-          Contact
-        </Link>
+        <Link to="/" className={location.pathname === "/" ? "text-[#252B42]" : ""}>Home</Link>
+        <Link to="/product" className={location.pathname === "/product" ? "text-[#252B42]" : ""}>Product</Link>
+        <Link to="/blog" className={location.pathname === "/blog" ? "text-[#252B42]" : ""}>Blog</Link>
+        <Link to="/pricing" className={location.pathname === "/pricing" ? "text-[#252B42]" : ""}>Pricing</Link>
+        <Link to="/contact" className={location.pathname === "/contact" ? "text-[#252B42]" : ""}>Contact</Link>
+        <Link to="/signup" className={location.pathname === "/signup" ? "text-[#252B42]" : ""}>Sign up</Link>
       </nav>
     </header>
   );

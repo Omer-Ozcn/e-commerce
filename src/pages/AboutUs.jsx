@@ -1,6 +1,6 @@
 import React from "react";
 import AboutHero from "../components/about/AboutHero";
-import Team from "../components/team/Team";
+import Team from "../components/about/Team";
 import AboutStats from "../components/about/AboutStats";
 import AboutVideo from "../components/about/AboutVideo";
 import Logos from "../components/about/LogoList";

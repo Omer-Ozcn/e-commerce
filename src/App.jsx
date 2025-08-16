@@ -1,16 +1,17 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import PageContent from "./layout/PageContent";
+import Footer from "./layout/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function App() {
+export default function App() {
   return (
     <Router>
       <Header />
       <PageContent />
       <Footer />
+      <ToastContainer position="top-center" autoClose={4000} />
     </Router>
   );
 }
-
-export default App;

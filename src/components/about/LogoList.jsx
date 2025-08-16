@@ -9,7 +9,7 @@ const logos = [
   "../ShopPage/icons/reddit.jpg",
 ];
 
-export default function TrustedBy() {
+export default function Logos() {
   return (
     <section className="w-full bg-[#FAFAFA] font-[Montserrat] flex justify-center">
       <div

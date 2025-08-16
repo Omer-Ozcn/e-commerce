@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";              // 👈 EKLE
+import { Link } from "react-router-dom";              
 import editorsPickProducts from "../../data/shop/EditorsPickData";
 import Pagination from "./Pagination";
 import useMediaQuery from "../../hooks/useMediaQuery";
@@ -23,7 +23,7 @@ export default function EditorsPickCard() {
           {currentProducts.map((product) => (
             <Link
               key={product.id}
-              to={`/product/${product.id}`}           // 👈 ROUTE
+              to={`/product/${product.id}`}          
               className="bg-white overflow-hidden block group cursor-pointer"
             >
               <img

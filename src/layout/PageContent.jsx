@@ -3,7 +3,9 @@ import Home from "../pages/HomePage";
 import Shop from "../pages/Shop";
 import ProductDetail from "../pages/ProductDetail";
 import Contact from "../pages/Contact";
-import About from "../pages/AboutUs"; 
+import About from "../pages/AboutUs";
+import Blog from "../pages/Blog";
+import Register from "../pages/Register"; 
 
 export default function PageContent() {
   return (
@@ -26,6 +28,14 @@ export default function PageContent() {
 
       <Route path="/about">
         <About />
+      </Route>
+
+      <Route path="/blog">
+        <Blog />
+      </Route>
+
+      <Route path="/signup">
+        <Register />
       </Route>
     </Switch>
   );

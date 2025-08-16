@@ -1,0 +1,159 @@
+{
+  "info": {
+    "_postman_id": "54a560c1-ca5e-4b5a-8ae2-6eec6facaf14",
+    "name": "Workintech FE Ecommerce",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Koleksiyon seviyesinde varsayılanlar",
+          "if (!pm.environment.get('password')) { pm.environment.set('password', 'Aa!123456'); }",
+          "if (!pm.environment.get('email')) { pm.environment.set('email', `user_${Date.now()}@example.com`); }",
+          "if (!pm.environment.get('storePhone')) { pm.environment.set('storePhone', '+905551112233'); }",
+          "if (!pm.environment.get('taxNo')) { pm.environment.set('taxNo', 'T1234V123456'); }",
+          "if (!pm.environment.get('iban')) { pm.environment.set('iban', 'TR120006200119000006672315'); }"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "GET /roles",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/roles", "host": ["{{baseUrl}}"], "path": ["roles"] }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('200 OK', () => pm.response.to.have.status(200));",
+              "const roles = pm.response.json();",
+              "pm.test('roles array', () => Array.isArray(roles));",
+              "['admin','store','customer'].forEach(code => {",
+              "  const found = roles.find(r => r.code === code);",
+              "  pm.test(`has role ${code}`, () => pm.expect(found).to.exist);",
+              "  if (found) {",
+              "    if (code==='admin') pm.environment.set('adminRoleId', found.id);",
+              "    if (code==='store') pm.environment.set('storeRoleId', found.id);",
+              "    if (code==='customer') pm.environment.set('customerRoleId', found.id);",
+              "  }",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /signup (customer)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const nonce = `${Date.now()}_${Math.floor(Math.random()*1e6)}`;",
+              "pm.environment.set('email', `customer_${nonce}@example.com`);",
+              "pm.environment.set('password', 'Aa!123456');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('2xx', () => pm.expect(pm.response.code).to.be.within(200,299));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Customer\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"role_id\": {{customerRoleId}}\n}\n"
+        },
+        "url": { "raw": "{{baseUrl}}/signup", "host": ["{{baseUrl}}"], "path": ["signup"] }
+      }
+    },
+    {
+      "name": "POST /signup (admin)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const nonce = `${Date.now()}_${Math.floor(Math.random()*1e6)}`;",
+              "pm.environment.set('email', `admin_${nonce}@example.com`);",
+              "pm.environment.set('password', 'Aa!123456');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": { "type": "text/javascript", "exec": [ "pm.test('2xx', () => pm.expect(pm.response.code).to.be.within(200,299));" ] }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test Admin\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"role_id\": {{adminRoleId}}\n}\n"
+        },
+        "url": { "raw": "{{baseUrl}}/signup", "host": ["{{baseUrl}}"], "path": ["signup"] }
+      }
+    },
+    {
+      "name": "POST /signup (store)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const nonce = `${Date.now()}_${Math.floor(Math.random()*1e6)}`;",
+              "pm.environment.set('email', `store_${nonce}@example.com`);",
+              "pm.environment.set('password', 'Aa!123456');",
+              "",
+              "// +905xxxxxxxxx üret",
+              "const rand9 = String(Math.floor(100000000 + Math.random()*900000000));",
+              "pm.environment.set('storePhone', `+905${rand9}`);",
+              "",
+              "// TXXXXVXXXXXX",
+              "const four = String(Math.floor(1000 + Math.random()*9000));",
+              "const six  = String(Math.floor(100000 + Math.random()*900000));",
+              "pm.environment.set('taxNo', `T${four}V${six}`);",
+              "",
+              "// TR + 24 digit",
+              "const ibanDigits = Array.from({length:24}, () => Math.floor(Math.random()*10)).join('');",
+              "pm.environment.set('iban', `TR${ibanDigits}`);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": { "type": "text/javascript", "exec": [ "pm.test('2xx', () => pm.expect(pm.response.code).to.be.within(200,299));" ] }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Store Owner\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"role_id\": {{storeRoleId}},\n  \"store\": {\n    \"name\": \"Eco Shop\",\n    \"phone\": \"{{storePhone}}\",\n    \"tax_no\": \"{{taxNo}}\",\n    \"bank_account\": \"{{iban}}\"\n  }\n}\n"
+        },
+        "url": { "raw": "{{baseUrl}}/signup", "host": ["{{baseUrl}}"], "path": ["signup"] }
+      }
+    }
+  ]
+}

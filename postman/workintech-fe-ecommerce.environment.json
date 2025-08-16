@@ -1,0 +1,16 @@
+{
+  "id": "3fb3e5ff-c885-4f93-b4f3-1247eb4348fd",
+  "name": "Workintech FE Ecommerce",
+  "values": [
+    { "key": "baseUrl", "value": "https://workintech-fe-ecommerce.onrender.com", "type": "default", "enabled": true },
+    { "key": "customerRoleId", "value": "", "type": "default", "enabled": true },
+    { "key": "adminRoleId", "value": "", "type": "default", "enabled": true },
+    { "key": "storeRoleId", "value": "", "type": "default", "enabled": true },
+    { "key": "email", "value": "", "type": "default", "enabled": true },
+    { "key": "password", "value": "", "type": "default", "enabled": true },
+    { "key": "storePhone", "value": "", "type": "default", "enabled": true },
+    { "key": "taxNo", "value": "", "type": "default", "enabled": true },
+    { "key": "iban", "value": "", "type": "default", "enabled": true }
+  ],
+  "_postman_variable_scope": "environment"
+}

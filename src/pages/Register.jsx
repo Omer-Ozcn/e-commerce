@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom"; 
+import { Link, useHistory } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRolesIfNeeded } from "../store/thunks/clientThunk";
+import { fetchRolesIfNeeded } from "../store/thunks/clientThunks";
 import { isValidTRPhone, normalizeTRPhone, isValidTRIBAN, normalizeIBAN } from "../utils/validators";
 
 export default function Register() {
@@ -78,7 +78,7 @@ export default function Register() {
       await axiosInstance.post("/signup", payload);
       reset();
       toast.success("You need to click link in email to activate your account!");
-      history.push("/"); 
+      history.push("/");
     } catch (err) {
       const msg = err?.response?.data?.message || "Registration failed";
       toast.error(msg);

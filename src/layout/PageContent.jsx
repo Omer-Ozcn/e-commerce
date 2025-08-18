@@ -1,17 +1,27 @@
-import { Switch, Route } from "react-router-dom";
+// src/layout/PageContent.jsx
+import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "../pages/HomePage";
 import Shop from "../pages/Shop";
 import ProductDetail from "../pages/ProductDetail";
 import Contact from "../pages/Contact";
 import About from "../pages/AboutUs";
 import Blog from "../pages/Blog";
-import Register from "../pages/Register"; 
+import Register from "../pages/Register";
+import Login from "../pages/Login"; 
 
 export default function PageContent() {
   return (
     <Switch>
       <Route exact path="/">
         <Home />
+      </Route>
+
+      <Route path="/login">
+        <Login />
+      </Route>
+
+      <Route path="/register">
+        <Register />
       </Route>
 
       <Route path="/shop">
@@ -32,10 +42,6 @@ export default function PageContent() {
 
       <Route path="/blog">
         <Blog />
-      </Route>
-
-      <Route path="/signup">
-        <Register />
       </Route>
     </Switch>
   );

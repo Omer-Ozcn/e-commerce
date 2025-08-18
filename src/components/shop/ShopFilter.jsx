@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-const SORT_OPTIONS_TR = [
-  { value: "price:asc",  label: "Fiyat: Düşük → Yüksek" },
-  { value: "price:desc", label: "Fiyat: Yüksek → Düşük" },
-  { value: "rating:desc",label: "Puan: Yüksek → Düşük" },
-  { value: "rating:asc", label: "Puan: Düşük → Yüksek" },
-];
-
 export default function ShopFilter({
   totalResults = 0,
-  sortBy = "price:asc",
+  sortBy = "price:asc",     // "price:asc" | "price:desc" | "rating:asc" | "rating:desc"
   filterText = "",
   viewMode = "grid",
   onSortChange,
-  onFilterTextChange,
+  onFilterChange,
   onViewChange,
-  onFilterClick, // istersen dışarıdan “Filtrele” butonuna extra davranış bağla
+  onApply,                  // "Filter" düğmesine basınca tetiklenecek
 }) {
-  // Props ile senkron local state
   const [localSort, setLocalSort] = useState(sortBy);
   const [localView, setLocalView] = useState(viewMode);
   const [localFilter, setLocalFilter] = useState(filterText);
@@ -25,21 +17,6 @@ export default function ShopFilter({
   useEffect(() => setLocalSort(sortBy), [sortBy]);
   useEffect(() => setLocalView(viewMode), [viewMode]);
   useEffect(() => setLocalFilter(filterText), [filterText]);
-
-  const handleSortChange = (e) => {
-    const val = e.target.value; // "price:desc"
-    setLocalSort(val);
-    onSortChange && onSortChange(val);
-  };
-
-  const toGrid = () => {
-    setLocalView("grid");
-    onViewChange && onViewChange("grid");
-  };
-  const toList = () => {
-    setLocalView("list");
-    onViewChange && onViewChange("list");
-  };
 
   return (
     <div className="w-full bg-white py-6">
@@ -52,10 +29,8 @@ export default function ShopFilter({
         <div className="flex items-center gap-3 justify-center w-full md:w-auto">
           <span className="text-sm font-bold text-[#737373] whitespace-nowrap">Views:</span>
           <button
-            onClick={toGrid}
-            className={`w-10 h-10 flex justify-center items-center border border-[#ECECEC] rounded-md ${
-              localView === "grid" ? "bg-gray-100" : "bg-white"
-            }`}
+            onClick={() => { setLocalView("grid"); onViewChange && onViewChange("grid"); }}
+            className={`w-10 h-10 flex justify-center items-center border border-[#ECECEC] rounded-md ${localView === "grid" ? "bg-gray-100" : "bg-white"}`}
             aria-label="Grid view"
           >
             <svg className="w-4 h-4 text-[#252B42]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,10 +41,8 @@ export default function ShopFilter({
             </svg>
           </button>
           <button
-            onClick={toList}
-            className={`w-10 h-10 flex justify-center items-center border border-[#ECECEC] rounded-md ${
-              localView === "list" ? "bg-gray-100" : "bg-white"
-            }`}
+            onClick={() => { setLocalView("list"); onViewChange && onViewChange("list"); }}
+            className={`w-10 h-10 flex justify-center items-center border border-[#ECECEC] rounded-md ${localView === "list" ? "bg-gray-100" : "bg-white"}`}
             aria-label="List view"
           >
             <svg className="w-4 h-4 text-[#737373]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -84,31 +57,31 @@ export default function ShopFilter({
         <div className="flex flex-wrap gap-3 items-center justify-center w-full md:w-auto">
           <select
             value={localSort}
-            onChange={handleSortChange}
-            className="h-10 px-3 border border-[#DDDDDD] bg-[#F9F9F9] rounded-md text-sm font-normal text-[#737373] min-w-[210px]"
+            onChange={(e) => setLocalSort(e.target.value)}
+            className="h-10 px-3 border border-[#DDDDDD] bg-[#F9F9F9] rounded-md text-sm font-normal text-[#737373] min-w-[170px]"
           >
-            {SORT_OPTIONS_TR.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
+            <option value="price:asc">Price: Low to High</option>
+            <option value="price:desc">Price: High to Low</option>
+            <option value="rating:asc">Rating: Low to High</option>
+            <option value="rating:desc">Rating: High to Low</option>
           </select>
 
           <input
             value={localFilter}
-            onChange={(e) => {
-              setLocalFilter(e.target.value);
-              onFilterTextChange && onFilterTextChange(e.target.value);
-            }}
-            placeholder="Ürün ara..."
-            className="h-10 px-3 border border-[#DDDDDD] bg-white rounded-md text-sm text-[#252B42] min-w-[200px]"
+            onChange={(e) => setLocalFilter(e.target.value)}
+            placeholder="Filter text…"
+            className="h-10 px-3 border border-[#DDDDDD] bg-[#F9F9F9] rounded-md text-sm text-[#737373] min-w-[180px]"
           />
 
           <button
-            onClick={() => onFilterClick && onFilterClick(localFilter)}
-            className="bg-[#23A6F0] text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 h-10 min-w-[80px]"
+            onClick={() => {
+              onSortChange && onSortChange(localSort);
+              onFilterChange && onFilterChange(localFilter);
+              onApply && onApply();     // isteği tetiklemek için
+            }}
+            className="bg-[#23A6F0] text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 h-10 min-w-[90px]"
           >
-            Filtrele
+            Filter
           </button>
         </div>
       </div>

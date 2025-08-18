@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import { useForm } from "react-hook-form";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";

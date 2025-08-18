@@ -1,18 +1,39 @@
 import axiosInstance from "../../api/axiosInstance";
-import { setCategories } from "../actions/productActions";
+import {
+  setProductList,
+  setTotal,
+  setFetchState,
+} from "../actions/productActions";
 
-let inFlight = false;
-export const fetchCategoriesIfNeeded = () => {
-  return async (dispatch, getState) => {
-    const has = getState().product?.categories?.length;
-    if (has || inFlight) return;
-    inFlight = true;
-    try {
-      const res = await axiosInstance.get("/categories");
-      const data = Array.isArray(res.data) ? res.data : (res.data?.categories || []);
-      dispatch(setCategories(data));
-    } finally {
-      inFlight = false;
-    }
-  };
+
+export const fetchProducts = (opts = {}) => async (dispatch, getState) => {
+  const state = getState().product || {};
+  const limit = opts.limit ?? state.limit ?? 25;
+  const offset = opts.offset ?? state.offset ?? 0;
+
+  const params = { limit, offset };
+  if (opts.filter) params.filter = opts.filter;
+  if (opts.sort) params.sort = opts.sort;
+  if (opts.categoryId) params.category = opts.categoryId; 
+
+  try {
+    dispatch(setFetchState("LOADING"));
+    const res = await axiosInstance.get("/products", { params });
+    const data = res.data || {};
+
+    const products = Array.isArray(data.products)
+      ? data.products
+      : Array.isArray(data)
+      ? data
+      : [];
+
+    const total = Number(data.total) || products.length || 0;
+
+    dispatch(setProductList(products));
+    dispatch(setTotal(total));
+    dispatch(setFetchState("SUCCEEDED"));
+  } catch (err) {
+    console.error("fetchProducts failed:", err);
+    dispatch(setFetchState("FAILED"));
+  }
 };

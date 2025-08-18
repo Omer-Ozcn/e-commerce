@@ -1,17 +1,18 @@
-// src/store/index.js
 import {
   legacy_createStore as createStore,
   combineReducers,
   applyMiddleware,
   compose,
 } from "redux";
-import { thunk } from "redux-thunk"; // <-- FIX
+import { thunk } from "redux-thunk";
 import { createLogger } from "redux-logger";
 
 import client from "./reducers/clientReducer";
 import cart from "./reducers/cartReducer";
 import product from "./reducers/productReducer";
 import user from "./reducers/userReducer";
+export { fetchCategoriesIfNeeded } from "./thunks/categoryThunks";
+export { fetchProducts } from "./thunks/productThunks";
 
 const logger = createLogger({ collapsed: true });
 

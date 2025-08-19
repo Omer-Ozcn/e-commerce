@@ -1,38 +1,30 @@
-import { useMemo, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import productDetailData from "../../data/productdetails/ProductDetailData";
+import { useState, useMemo } from "react";
 
-export default function ProductGallery() {
-  const { id } = useParams();
-  const product = productDetailData.find((p) => p.id === Number(id));
-
+export default function ProductGallery({ product }) {
   const images = useMemo(() => {
     if (!product) return [];
-    const rest = (product.gallery || []).filter((g) => g !== product.imgUrl);
-    return [product.imgUrl, ...rest];
+    const arr = Array.isArray(product.images) ? product.images : [];
+    const urls = arr.map((x) => x?.url).filter(Boolean);
+    return urls.length ? urls : [];
   }, [product]);
 
   const [active, setActive] = useState(0);
   const nextImg = () => setActive((i) => (i + 1) % images.length);
   const prevImg = () => setActive((i) => (i - 1 + images.length) % images.length);
 
-  if (!product) {
-    return (
-      <div className="py-10 px-4 text-center">
-        <h2 className="text-2xl font-bold text-red-500">Product not found</h2>
-        <Link to="/shop" className="text-[#23856D] underline">Back to Shop</Link>
-      </div>
-    );
-  }
-
   return (
     <div className="md:w-[505px]">
       <div className="relative w-full h-[260px] md:h-[420px] overflow-hidden bg-[#F5F5F5] rounded-lg">
-        <img
-          src={images[active]}
-          alt={`${product.title} main`}
-          className="w-full h-full object-contain md:object-cover"
-        />
+        {images[active] ? (
+          <img
+            src={images[active]}
+            alt={product?.name || "product"}
+            className="w-full h-full object-contain md:object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-100" />
+        )}
+
         {images.length > 1 && (
           <>
             <button
@@ -66,7 +58,7 @@ export default function ProductGallery() {
             >
               <img
                 src={img}
-                alt={`${product.title} ${i + 1}`}
+                alt={`${product?.name || "product"} ${i + 1}`}
                 className="w-full h-full object-cover rounded"
               />
             </button>

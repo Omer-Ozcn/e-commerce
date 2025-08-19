@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 
 export default function ShopFilter({
   totalResults = 0,
-  sortBy = "price:asc",     // "price:asc" | "price:desc" | "rating:asc" | "rating:desc"
+  sortBy = "price:asc",     
   filterText = "",
   viewMode = "grid",
   onSortChange,
   onFilterChange,
   onViewChange,
-  onApply,                  // "Filter" düğmesine basınca tetiklenecek
+  onApply,                 
 }) {
   const [localSort, setLocalSort] = useState(sortBy);
   const [localView, setLocalView] = useState(viewMode);
@@ -25,7 +25,6 @@ export default function ShopFilter({
           Showing all {totalResults} results
         </p>
 
-        {/* Views */}
         <div className="flex items-center gap-3 justify-center w-full md:w-auto">
           <span className="text-sm font-bold text-[#737373] whitespace-nowrap">Views:</span>
           <button
@@ -53,7 +52,6 @@ export default function ShopFilter({
           </button>
         </div>
 
-        {/* Sort & Filter */}
         <div className="flex flex-wrap gap-3 items-center justify-center w-full md:w-auto">
           <select
             value={localSort}
@@ -77,7 +75,7 @@ export default function ShopFilter({
             onClick={() => {
               onSortChange && onSortChange(localSort);
               onFilterChange && onFilterChange(localFilter);
-              onApply && onApply();     // isteği tetiklemek için
+              onApply && onApply();    
             }}
             className="bg-[#23A6F0] text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-blue-600 h-10 min-w-[90px]"
           >

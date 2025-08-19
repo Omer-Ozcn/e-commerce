@@ -18,7 +18,7 @@ function buildPages(currentPage, totalPages, { boundaryCount = 1, siblingCount =
   const leftSibling  = Math.max(currentPage - siblingCount, boundaryCount + 1);
   const rightSibling = Math.min(currentPage + siblingCount, totalPages - boundaryCount);
 
-  const showLeftDots  = leftSibling  > boundaryCount + 2;                 // boşluk 2+ ise …
+  const showLeftDots  = leftSibling  > boundaryCount + 2;                
   const showRightDots = rightSibling < totalPages - boundaryCount - 1;
 
   const leftFill  = showLeftDots  ? [DOTS] : range(boundaryCount + 1, leftSibling - 1);

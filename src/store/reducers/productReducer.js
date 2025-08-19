@@ -1,6 +1,7 @@
 import {
   SET_CATEGORIES, SET_PRODUCT_LIST, SET_TOTAL, SET_FETCH_STATE,
-  SET_LIMIT, SET_OFFSET, SET_FILTER
+  SET_LIMIT, SET_OFFSET, SET_FILTER,
+  SET_PRODUCT_LOADING, SET_CURRENT_PRODUCT, // 🔽
 } from "../actions/types";
 
 const initialState = {
@@ -10,7 +11,9 @@ const initialState = {
   limit: 25,
   offset: 0,
   filter: "",
-  fetchState: "NOT_FETCHED", 
+  fetchState: "NOT_FETCHED",
+  productLoading: false,
+  currentProduct: null,
 };
 
 function productReducer(state = initialState, action) {
@@ -29,9 +32,14 @@ function productReducer(state = initialState, action) {
       return { ...state, offset: action.payload };
     case SET_FILTER:
       return { ...state, filter: action.payload };
+
+    case SET_PRODUCT_LOADING:
+      return { ...state, productLoading: !!action.payload };
+    case SET_CURRENT_PRODUCT:
+      return { ...state, currentProduct: action.payload || null };
+
     default:
       return state;
   }
 }
-
 export default productReducer;

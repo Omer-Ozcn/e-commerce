@@ -12,23 +12,20 @@ import LogoList from "../components/shop/Icons";
 
 export default function Shop() {
   const dispatch = useDispatch();
-  const { categoryId } = useParams();     // shop/:gender/:categoryName/:categoryId
+  const { categoryId } = useParams();    
 
   const { productList = [], fetchState = "NOT_FETCHED", total = 0, limit:limitFromStore } =
     useSelector((s) => s.product || {});
 
-  // Kontrol state'leri
   const [viewMode, setViewMode] = useState("grid");
-  const [sortBy, setSortBy]     = useState("price:asc"); // backend formatında
+  const [sortBy, setSortBy]     = useState("price:asc"); 
   const [filterText, setFilterText] = useState("");
   const [limit, setLimit]       = useState(limitFromStore || 12);
   const [page, setPage]         = useState(1);
 
-  // offset hesabı
   const offset = (page - 1) * limit;
   const catId  = categoryId ? Number(categoryId) : undefined;
 
-  // İlk yükleme ve tüm bağımlılıklar değiştiğinde yeniden fetch
   useEffect(() => {
     dispatch(fetchProducts({
       limit,
@@ -39,13 +36,11 @@ export default function Shop() {
     }));
   }, [dispatch, limit, offset, catId, sortBy, filterText]);
 
-  // Toplam sayfa
   const totalPages = useMemo(
     () => Math.max(1, Math.ceil((Number(total) || 0) / limit)),
     [total, limit]
   );
 
-  // Filter butonuna basınca sayfayı başa al
   const handleApply = () => setPage(1);
 
   const isLoading = fetchState === "LOADING";
@@ -73,26 +68,22 @@ export default function Shop() {
         onApply={handleApply}
       />
 
-      {/* Loading */}
       {isLoading && (
         <div className="flex justify-center py-10">
           <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-[#23A6F0]" />
         </div>
       )}
 
-      {/* Error */}
       {isFailed && (
         <p className="text-center text-red-500 py-8">
           Ürünler yüklenirken bir sorun oluştu.
         </p>
       )}
 
-      {/* Products */}
       {!isLoading && !isFailed && (
         <section className="max-w-6xl mx-auto px-4 py-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold">Products ({total})</h2>
-            {/* İstersen sayfa başına adet seçici */}
             <select
               value={limit}
               onChange={(e) => { setPage(1); setLimit(Number(e.target.value) || 12); }}

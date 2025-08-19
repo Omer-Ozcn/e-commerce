@@ -1,3 +1,4 @@
+// src/pages/Shop.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -12,28 +13,40 @@ import LogoList from "../components/shop/Icons";
 
 export default function Shop() {
   const dispatch = useDispatch();
-  const { categoryId } = useParams();    
+  const { categoryId } = useParams(); // /shop/:gender/:categoryName/:categoryId
 
-  const { productList = [], fetchState = "NOT_FETCHED", total = 0, limit:limitFromStore } =
-    useSelector((s) => s.product || {});
+  const {
+    productList = [],
+    fetchState = "NOT_FETCHED",
+    total = 0,
+    limit: limitFromStore,
+  } = useSelector((s) => s.product || {});
 
   const [viewMode, setViewMode] = useState("grid");
-  const [sortBy, setSortBy]     = useState("price:asc"); 
+  const [sortBy, setSortBy] = useState("price:asc");
   const [filterText, setFilterText] = useState("");
-  const [limit, setLimit]       = useState(limitFromStore || 12);
-  const [page, setPage]         = useState(1);
+  const [limit, setLimit] = useState(limitFromStore || 12);
+  const [page, setPage] = useState(1);
 
   const offset = (page - 1) * limit;
-  const catId  = categoryId ? Number(categoryId) : undefined;
+  const catId = categoryId ? Number(categoryId) : undefined;
 
+  // Kategori değişince sayfa 1'e dön
   useEffect(() => {
-    dispatch(fetchProducts({
-      limit,
-      offset,
-      categoryId: catId,
-      sort: sortBy,
-      filter: filterText,
-    }));
+    setPage(1);
+  }, [categoryId]);
+
+  // Ürünleri çek
+  useEffect(() => {
+    dispatch(
+      fetchProducts({
+        limit,
+        offset,
+        categoryId: catId,
+        sort: sortBy,
+        filter: filterText,
+      })
+    );
   }, [dispatch, limit, offset, catId, sortBy, filterText]);
 
   const totalPages = useMemo(
@@ -44,7 +57,7 @@ export default function Shop() {
   const handleApply = () => setPage(1);
 
   const isLoading = fetchState === "LOADING";
-  const isFailed  = fetchState === "FAILED";
+  const isFailed = fetchState === "FAILED";
 
   const gridCls =
     viewMode === "grid"
@@ -75,9 +88,7 @@ export default function Shop() {
       )}
 
       {isFailed && (
-        <p className="text-center text-red-500 py-8">
-          Ürünler yüklenirken bir sorun oluştu.
-        </p>
+        <p className="text-center text-red-500 py-8">Ürünler yüklenirken bir sorun oluştu.</p>
       )}
 
       {!isLoading && !isFailed && (
@@ -86,7 +97,10 @@ export default function Shop() {
             <h2 className="text-xl font-bold">Products ({total})</h2>
             <select
               value={limit}
-              onChange={(e) => { setPage(1); setLimit(Number(e.target.value) || 12); }}
+              onChange={(e) => {
+                setPage(1);
+                setLimit(Number(e.target.value) || 12);
+              }}
               className="h-9 px-2 border rounded text-sm text-[#737373]"
               title="Items per page"
             >

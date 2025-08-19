@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import { fetchProductById } from "../store/thunks/productThunks";
@@ -12,12 +12,14 @@ import ProductDescription from "../components/productdetail/ProductDescription";
 import BestsellerProducts from "../components/productdetail/BestSellerProducts";
 import LogoList from "../components/shop/Icons";
 
+import { addToCart } from "../store/thunks/cartThunks";      
+import { toast } from "react-toastify";                     
+
 export default function ProductDetail() {
   const { productId: pidA, id: pidB } = useParams();
   const productId = pidA || pidB;
 
   const dispatch = useDispatch();
-  const history  = useHistory();
   const loading  = useSelector((s) => s.product.productLoading);
   const product  = useSelector((s) => s.product.currentProduct);
 
@@ -37,7 +39,6 @@ export default function ProductDetail() {
 
   return (
     <main>
-
       <Breadcrumb productTitle={product?.name} />
 
       <section className="bg-[#FAFAFA] py-6 md:py-10">
@@ -45,7 +46,13 @@ export default function ProductDetail() {
           <ProductGallery product={product} />
           <div className="flex flex-col gap-6">
             <ProductInfo product={product} />
-            <ActionBar className="mt-2" />
+            <ActionBar
+              className="mt-2"
+              onAddToCart={() => {
+                dispatch(addToCart(product, 1));
+                toast.success("Sepete eklendi");
+              }}
+            />
           </div>
         </div>
       </section>

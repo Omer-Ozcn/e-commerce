@@ -4,17 +4,20 @@ import {
   applyMiddleware,
   compose,
 } from "redux";
-import { thunk } from "redux-thunk";
-import { createLogger } from "redux-logger";
+import { thunk } from "redux-thunk"; 
+
 
 import client from "./reducers/clientReducer";
 import cart from "./reducers/cartReducer";
 import product from "./reducers/productReducer";
 import user from "./reducers/userReducer";
-export { fetchCategoriesIfNeeded } from "./thunks/categoryThunks";
-export { fetchProducts } from "./thunks/productThunks";
 
-const logger = createLogger({ collapsed: true });
+const rootReducer = combineReducers({
+  client,
+  cart,
+  product,
+  user,
+});
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -22,10 +25,9 @@ const composeEnhancers =
   compose;
 
 const middlewares = [thunk];
-if (import.meta.env.DEV) middlewares.push(logger);
 
 const store = createStore(
-  combineReducers({ client, cart, product, user }),
+  rootReducer,
   composeEnhancers(applyMiddleware(...middlewares))
 );
 

@@ -1,83 +1,101 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Trash2 } from "lucide-react";
-import { addToCart, removeFromCart, toggleChecked, setAllChecked } from "../store/thunks/cartThunks";
+import { addToCart, removeFromCart, toggleChecked } from "../store/thunks/cartThunks";
+import OrderSummary from "../components/cart/OrderSummary";
+import Breadcrumb from "../components/common/Breadcrumb";
 
-const money = (n) => (Number(n) || 0).toLocaleString("tr-TR", { style: "currency", currency: "TRY" });
+const TL = (n=0) => new Intl.NumberFormat("tr-TR",{style:"currency",currency:"TRY"}).format(n);
 
 export default function CartPage() {
   const dispatch = useDispatch();
-  const items = useSelector((s) => s.cart?.cart || []);
-  const allChecked = items.length > 0 && items.every((i) => i.checked);
-  const selected = items.filter((i) => i.checked);
-  const total = selected.reduce(
-    (sum, it) => sum + (Number(it.product?.price) || 0) * (Number(it.count) || 0),
-    0
-  );
+  const cart = useSelector((s) => s.cart?.cart || []);
 
   return (
-    <main className="max-w-[1088px] mx-auto px-4 py-8 font-[Montserrat]">
-      <h1 className="text-2xl font-bold text-[#252B42]">
-        Sepetim <span className="text-[#737373] text-lg">({items.length} ürün)</span>
-      </h1>
+    <main className="bg-[#FAFAFA] min-h-[60vh]">
+      <Breadcrumb title="Sepetim" />
 
-      {!items.length ? (
-        <div className="mt-8 bg-white rounded-lg border p-8 text-center">
-          <p className="text-[#737373]">Sepetiniz boş.</p>
-          <Link to="/shop" className="inline-block mt-4 px-5 py-3 rounded bg-[#23A6F0] text-white font-semibold">
-            Alışverişe Başla
-          </Link>
+      <section className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6">
+        <div className="lg:pr-2">
+          <h1 className="text-2xl font-bold text-[#252B42] mb-4">
+            Sepetim <span className="text-[#737373] font-normal">({cart.length} Ürün)</span>
+          </h1>
+
+          {cart.length === 0 ? (
+            <div className="p-6 bg-white border rounded-lg text-center">
+              <p className="text-[#737373] mb-4">Sepetiniz boş.</p>
+              <Link to="/shop" className="inline-block px-4 h-10 leading-10 bg-[#23A6F0] text-white rounded-md font-semibold">
+                Alışverişe Başla
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {cart.map((item) => {
+                const id = item?.product?.id;
+                const name = item?.product?.name || item?.product?.title || `#${id}`;
+                const price = Number(item?.product?.price) || 0;
+                const img = item?.product?.images?.[0]?.url || item?.product?.imgUrl;
+
+                return (
+                  <div key={id} className="bg-white rounded-lg border p-4 flex gap-4 items-center">
+                    <input
+                      type="checkbox"
+                      checked={item.checked !== false}
+                      onChange={() => dispatch(toggleChecked(id))}
+                      className="w-4 h-4 accent-[#23A6F0]"
+                    />
+                    <img
+                      src={img}
+                      alt={name}
+                      className="w-16 h-16 object-cover rounded border"
+                    />
+                    <div className="flex-1">
+                      <p className="font-semibold text-[#252B42] line-clamp-2">{name}</p>
+                      <p className="text-sm text-[#737373] mt-1">{TL(price)}</p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => dispatch(addToCart(item.product, -1))}
+                        className="w-8 h-8 rounded border bg-white"
+                        title="Azalt"
+                      >
+                        −
+                      </button>
+                      <div className="w-10 text-center font-semibold">{item.count}</div>
+                      <button
+                        type="button"
+                        onClick={() => dispatch(addToCart(item.product, +1))}
+                        className="w-8 h-8 rounded border bg-white"
+                        title="Arttır"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <div className="w-24 text-right font-bold">{TL(price * (Number(item.count)||1))}</div>
+
+                    <button
+                      type="button"
+                      onClick={() => dispatch(removeFromCart(id))}
+                      className="ml-2 text-[#e53e3e] font-bold"
+                      title="Kaldır"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
-      ) : (
-        <>
-          <div className="mt-6 bg-white rounded-lg border divide-y">
-            <div className="flex items-center px-4 py-3 text-sm text-[#737373]">
-              <label className="inline-flex items-center gap-2">
-                <input type="checkbox" checked={allChecked} onChange={(e) => dispatch(setAllChecked(e.target.checked))} />
-                <span>Tümünü Seç</span>
-              </label>
-              <span className="ml-auto hidden md:block w-[120px] text-right">Adet</span>
-              <span className="ml-6 hidden md:block w-[120px] text-right">Fiyat</span>
-            </div>
 
-            {items.map(({ product, count, checked }) => {
-              const img = product.images?.[0]?.url || product.imgUrl;
-              return (
-                <div key={product.id} className="px-4 py-4 flex items-center gap-4">
-                  <input type="checkbox" checked={!!checked} onChange={() => dispatch(toggleChecked(product.id))} className="mt-1" />
-
-                  <img src={img} alt={product.name || product.title} className="w-16 h-16 rounded object-cover border" />
-
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-[#252B42] line-clamp-2">{product.name || product.title}</div>
-                    <div className="text-xs text-[#737373]">Stok: {product.stock ?? "—"}</div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button className="w-8 h-8 rounded border hover:bg-gray-50" onClick={() => dispatch(addToCart(product, -1))}>–</button>
-                    <span className="w-8 text-center">{count}</span>
-                    <button className="w-8 h-8 rounded border hover:bg-gray-50" onClick={() => dispatch(addToCart(product, +1))}>+</button>
-                  </div>
-
-                  <div className="w-[100px] text-right font-bold text-[#f97316]">{money(product.price)}</div>
-
-                  <button className="ml-3 text-gray-400 hover:text-red-500" title="Kaldır" onClick={() => dispatch(removeFromCart(product.id))}>
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
-              );
-            })}
+        <div className="lg:pl-2">
+          <div className="lg:sticky lg:top-24">
+            <OrderSummary />
           </div>
-
-          <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-end gap-3">
-            <div className="text-[#737373]">
-              Seçili ürün sayısı: <span className="font-semibold">{selected.length}</span>
-            </div>
-            <div className="text-xl font-extrabold text-[#252B42]">Toplam: {money(total)}</div>
-            <Link to="/checkout" className="px-5 py-3 rounded bg-[#23A6F0] text-white font-semibold">Devam Et</Link>
-          </div>
-        </>
-      )}
+        </div>
+      </section>
     </main>
   );
 }

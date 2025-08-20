@@ -1,4 +1,3 @@
-// src/layout/PageContent.jsx
 import { Switch, Route } from "react-router-dom";
 import Home from "../pages/HomePage";
 import Shop from "../pages/Shop";
@@ -25,20 +24,18 @@ export default function PageContent() {
         <Register />
       </Route>
 
-      {/* PRODUCT DETAIL */}
       <Route path="/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
         <ProductDetail />
       </Route>
+
       <Route path="/product/:productId">
         <ProductDetail />
       </Route>
 
-      {/* SHOP (tüm ürünler) */}
       <Route exact path="/shop">
         <Shop />
       </Route>
 
-      {/* SHOP (kategoriye göre) */}
       <Route exact path="/shop/:gender/:categoryName/:categoryId">
         <Shop />
       </Route>

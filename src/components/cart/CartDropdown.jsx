@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { addToCart, removeFromCart, toggleChecked } from "../../store/thunks/cartThunks";
@@ -9,12 +10,18 @@ export default function CartDropdown({ onClose = () => {} }) {
   const dispatch = useDispatch();
   const items = useSelector((s) => s.cart?.cart || []);
 
-  const total = items.reduce(
-    (sum, it) => sum + (Number(it?.product?.price) || 0) * (Number(it.count) || 1),
-    0
-  );
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
-  // === Overlay: hem mobil hem desktop (mobilde karartma, desktop'ta transparan) ===
+  const total = items.reduce((sum, it) => {
+    const unit = Number(it?.product?.price) || 0;
+    const cnt = Number(it?.count) || 1;
+    return sum + unit * cnt;
+  }, 0);
+
   const Overlay = () => (
     <button
       className="fixed inset-0 z-[55] bg-black/20 md:bg-transparent"
@@ -23,7 +30,6 @@ export default function CartDropdown({ onClose = () => {} }) {
     />
   );
 
-  // ==== Boş sepet ====
   if (!items.length) {
     return (
       <>
@@ -41,7 +47,6 @@ export default function CartDropdown({ onClose = () => {} }) {
     );
   }
 
-  // ==== Ürünlü sepet ====
   return (
     <>
       <Overlay />
@@ -51,6 +56,8 @@ export default function CartDropdown({ onClose = () => {} }) {
           md:absolute md:translate-x-0 md:left-auto md:right-0 md:top-full md:mt-2 md:w-[360px]
           bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 z-[60]
         "
+        role="dialog"
+        aria-label="Sepet"
       >
         <h4 className="text-base font-bold text-[#252B42] mb-3">
           Sepetim ({items.length} Ürün)
@@ -58,24 +65,27 @@ export default function CartDropdown({ onClose = () => {} }) {
 
         <div className="max-h-[60vh] md:max-h-[360px] overflow-auto divide-y">
           {items.map((it) => {
-            const p = it.product || {};
-            const img = p.images?.[0]?.url || p.imgUrl;
+            const p = it?.product || {};
+            const img = p?.images?.[0]?.url || p?.imgUrl || "";
+            const title = p?.name || p?.title || "Ürün";
+
             return (
-              <div key={p.id} className="py-3 flex gap-3">
+              <div key={String(p?.id ?? Math.random())} className="py-3 flex gap-3">
                 <img
                   src={img}
-                  alt={p.name || p.title}
+                  alt={title}
                   className="w-16 h-16 rounded object-cover border flex-shrink-0"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/64x64.png?text=%20";
+                  }}
                 />
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="text-sm font-semibold text-[#252B42] line-clamp-2">
-                      {p.name || p.title}
-                    </div>
+                    <div className="text-sm font-semibold text-[#252B42] truncate">{title}</div>
                     <button
                       className="text-xs text-gray-400 hover:text-red-500"
-                      onClick={() => dispatch(removeFromCart(p.id))}
+                      onClick={() => p?.id && dispatch(removeFromCart(p.id))}
                       aria-label="Kaldır"
                       title="Kaldır"
                     >
@@ -86,8 +96,8 @@ export default function CartDropdown({ onClose = () => {} }) {
                   <label className="mt-1 inline-flex items-center gap-2 text-xs text-gray-500">
                     <input
                       type="checkbox"
-                      checked={!!it.checked}
-                      onChange={() => dispatch(toggleChecked(p.id))}
+                      checked={!!it?.checked}
+                      onChange={() => p?.id && dispatch(toggleChecked(p.id))}
                     />
                     <span>Seçili</span>
                   </label>
@@ -96,15 +106,17 @@ export default function CartDropdown({ onClose = () => {} }) {
                     <div className="flex items-center gap-2">
                       <button
                         className="w-8 h-8 rounded border hover:bg-gray-50"
-                        onClick={() => dispatch(addToCart(p, -1))}
+                        onClick={() => p?.id && dispatch(addToCart(p, -1))}
                         aria-label="Azalt"
                       >
                         –
                       </button>
-                      <span className="text-sm font-semibold w-6 text-center">{it.count}</span>
+                      <span className="text-sm font-semibold w-6 text-center">
+                        {Number(it?.count) || 1}
+                      </span>
                       <button
                         className="w-8 h-8 rounded border hover:bg-gray-50"
-                        onClick={() => dispatch(addToCart(p, +1))}
+                        onClick={() => p?.id && dispatch(addToCart(p, +1))}
                         aria-label="Arttır"
                       >
                         +
@@ -112,7 +124,7 @@ export default function CartDropdown({ onClose = () => {} }) {
                     </div>
 
                     <div className="text-sm font-bold text-[#f97316] shrink-0">
-                      {fmt(p.price)}
+                      {fmt(p?.price)}
                     </div>
                   </div>
                 </div>
@@ -135,9 +147,9 @@ export default function CartDropdown({ onClose = () => {} }) {
             Sepete Git
           </Link>
           <Link
-            to="/checkout"
+            to="/cart" 
             onClick={onClose}
-            className="flex-1 h-11 grid place-items-center rounded bg-[#F97316] text-white text-sm font-semibold hover:opacity-95"
+            className="flex-1 h-11 grid place-items-center rounded bg-[#252B42] text-white text-sm font-semibold hover:opacity-95"
           >
             Siparişi Tamamla
           </Link>

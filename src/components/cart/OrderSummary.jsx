@@ -1,12 +1,10 @@
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const TL = (n = 0) =>
-  new Intl.NumberFormat("tr-TR", {
-    style: "currency",
-    currency: "TRY",
-    maximumFractionDigits: 2,
-  }).format(Number(n) || 0);
+  new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 2 })
+    .format(Number(n) || 0);
 
 const SHIPPING_BASE = 29.99;
 const FREE_SHIPPING_THRESHOLD = 150;
@@ -14,43 +12,38 @@ const FREE_SHIPPING_THRESHOLD = 150;
 export default function OrderSummary() {
   const cart = useSelector((s) => s.cart?.cart || []);
   const [coupon, setCoupon] = useState("");
+  const history = useHistory();
 
   const subtotal = useMemo(
     () =>
-      cart
-        .filter((it) => it.checked !== false)
-        .reduce(
-          (sum, it) =>
-            sum +
-            (Number(it.count) || 1) * (Number(it?.product?.price) || 0),
-          0
-        ),
+      cart.filter((it) => it.checked !== false).reduce(
+        (sum, it) => sum + (Number(it.count) || 1) * (Number(it?.product?.price) || 0),
+        0
+      ),
     [cart]
   );
 
-  const shippingDiscount =
-    subtotal >= FREE_SHIPPING_THRESHOLD ? SHIPPING_BASE : 0;
+  const shippingDiscount = subtotal >= FREE_SHIPPING_THRESHOLD ? SHIPPING_BASE : 0;
   const shippingPayable = Math.max(0, SHIPPING_BASE - shippingDiscount);
   const grandTotal = subtotal + shippingPayable;
 
   const hasItems = cart.some((it) => it.checked !== false);
+  const goCheckout = () => { if (hasItems) history.push("/checkout"); };
 
   return (
     <aside className="w-full">
       <button
         type="button"
-        className="w-full h-12 rounded-md bg-[#252B42] text-white font-bold mb-4 "
+        className="w-full h-12 rounded-md bg-[#252B42] text-white font-bold mb-4"
         disabled={!hasItems}
         title={!hasItems ? "Sepette seçili ürün yok" : "Sepeti Onayla"}
-        onClick={() => {}}
+        onClick={goCheckout}
       >
         Sepeti Onayla
       </button>
 
       <div className="rounded-lg border border-[#E6E6E6] bg-white p-5">
-        <h3 className="text-[20px] font-bold text-[#252B42] mb-4">
-          Sipariş Özeti
-        </h3>
+        <h3 className="text-[20px] font-bold text-[#252B42] mb-4">Sipariş Özeti</h3>
 
         <div className="flex items-center justify-between py-2">
           <span className="text-[#737373]">Ürünün Toplamı</span>
@@ -101,7 +94,7 @@ export default function OrderSummary() {
         type="button"
         className="w-full h-12 rounded-md bg-[#252B42] text-white font-bold mt-4"
         disabled={!hasItems}
-        onClick={() => {}}
+        onClick={goCheckout}
       >
         Sepeti Onayla
       </button>

@@ -1,4 +1,4 @@
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "../pages/HomePage";
 import Shop from "../pages/Shop";
 import ProductDetail from "../pages/ProductDetail";
@@ -8,53 +8,34 @@ import Blog from "../pages/Blog";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import CartPage from "../pages/CartPage";
+import Checkout from "../pages/Checkout";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function PageContent() {
   return (
     <Switch>
-      <Route exact path="/">
-        <Home />
-      </Route>
-
-      <Route path="/login">
-        <Login />
-      </Route>
-
-      <Route path="/register">
-        <Register />
-      </Route>
+      <Route exact path="/"><Home /></Route>
+      <Route path="/login"><Login /></Route>
+      <Route path="/register"><Register /></Route>
 
       <Route path="/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId">
         <ProductDetail />
       </Route>
+      <Route path="/product/:productId"><ProductDetail /></Route>
+      <Route exact path="/shop"><Shop /></Route>
 
-      <Route path="/product/:productId">
-        <ProductDetail />
-      </Route>
+      <Route path="/cart"><CartPage /></Route>
 
-      <Route exact path="/shop">
-        <Shop />
-      </Route>
+      {/* Korumalı adres/checkout sayfası */}
+      <ProtectedRoute path="/checkout">
+        <Checkout />
+      </ProtectedRoute>
 
-      <Route exact path="/shop/:gender/:categoryName/:categoryId">
-        <Shop />
-      </Route>
+      <Route path="/contact"><Contact /></Route>
+      <Route path="/about"><About /></Route>
+      <Route path="/blog"><Blog /></Route>
 
-      <Route path="/cart">
-        <CartPage />
-      </Route>
-
-      <Route path="/contact">
-        <Contact />
-      </Route>
-
-      <Route path="/about">
-        <About />
-      </Route>
-
-      <Route path="/blog">
-        <Blog />
-      </Route>
+      <Redirect to="/" />
     </Switch>
   );
 }

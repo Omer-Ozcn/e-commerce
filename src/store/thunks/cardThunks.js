@@ -1,10 +1,5 @@
 import axiosInstance from "../../api/axiosInstance";
-import {
-  setCardLoading,
-  setCardList,
-  upsertCard,
-  removeCard,
-} from "../actions/cardActions";
+import { setCardLoading, setCardList, upsertCard, removeCard, selectCardId } from "../actions/cardActions";
 
 const authHeaders = (getState) => {
   const token = getState()?.user?.token || localStorage.getItem("token");
@@ -41,7 +36,9 @@ export const createCard = (payload) => async (dispatch, getState) => {
 
 export const updateCard = (payload) => async (dispatch, getState) => {
   try {
-    const res = await axiosInstance.put("/user/card", payload, { headers: authHeaders(getState) });
+    const res = await axiosInstance.post("/user/card", payload, {
+      headers: { ...authHeaders(getState), "X-HTTP-Method-Override": "PUT" },
+    });
     const saved = res?.data || payload;
     dispatch(upsertCard(saved));
     return saved;
@@ -60,4 +57,9 @@ export const deleteCard = (id) => async (dispatch, getState) => {
     console.error("deleteCard failed:", e);
     throw e;
   }
+};
+
+export const selectCard = (id) => (dispatch) => {
+  dispatch(selectCardId(id));
+  return id;
 };

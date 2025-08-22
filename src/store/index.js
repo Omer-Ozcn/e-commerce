@@ -12,6 +12,7 @@ import cart from "./reducers/cartReducer";
 import user from "./reducers/userReducer";
 import address from "./reducers/addressReducer";
 import card from "./reducers/cardReducer";
+import order from "./reducers/orderReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   user,
   address,
   card,
+  order,
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

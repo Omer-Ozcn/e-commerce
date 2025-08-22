@@ -19,55 +19,31 @@ import { logoutUser } from "../store/actions/userActions";
 import CartDropdown from "../components/cart/CartDropdown";
 
 const slugify = (s = "") =>
-  s
-    .toString()
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
+  s.toString().trim().toLowerCase().normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)+/g, "");
 
 const trToAscii = (s = "") =>
   s.replace(/[ıİşŞğĞçÇöÖüÜ]/g, (ch) => {
-    const map = {
-      ı: "i",
-      İ: "i",
-      ş: "s",
-      Ş: "s",
-      ğ: "g",
-      Ğ: "g",
-      ç: "c",
-      Ç: "c",
-      ö: "o",
-      Ö: "o",
-      ü: "u",
-      Ü: "u",
-    };
+    const map = { ı:"i", İ:"i", ş:"s", Ş:"s", ğ:"g", Ğ:"g", ç:"c", Ç:"c", ö:"o", Ö:"o", ü:"u", Ü:"u" };
     return map[ch] || ch;
   });
 
 const codeMap = {
-  tisort: { label: "T-Shirt", slug: "t-shirt" },
-  ayakkabi: { label: "Shoes", slug: "shoes" },
-  ceket: { label: "Jacket", slug: "jacket" },
-  elbise: { label: "Dress", slug: "dress" },
-  etek: { label: "Skirt", slug: "skirt" },
-  gomlek: { label: "Shirt", slug: "shirt" },
-  kazak: { label: "Sweater", slug: "sweater" },
-  pantalon: { label: "Pants", slug: "pants" },
+  tisort:{label:"T-Shirt",slug:"t-shirt"}, ayakkabi:{label:"Shoes",slug:"shoes"},
+  ceket:{label:"Jacket",slug:"jacket"}, elbise:{label:"Dress",slug:"dress"},
+  etek:{label:"Skirt",slug:"skirt"}, gomlek:{label:"Shirt",slug:"shirt"},
+  kazak:{label:"Sweater",slug:"sweater"}, pantalon:{label:"Pants",slug:"pants"},
 };
-const genderMap = { k: { label: "Women", path: "women" }, e: { label: "Men", path: "men" } };
-
-const keyFromCode = (code = "") =>
-  trToAscii((code.split(":")[1] || "").toString()).toLowerCase().replace(/[^a-z0-9]/g, "");
-
+const genderMap = { k:{label:"Women",path:"women"}, e:{label:"Men",path:"men"} };
+const keyFromCode = (code="") => trToAscii((code.split(":")[1]||"").toString()).toLowerCase().replace(/[^a-z0-9]/g,"");
 const viewOf = (cat) => {
   const key = keyFromCode(cat.code || "");
   const map = codeMap[key];
   const label = (map && map.label) || cat.title;
-  const slug = (map && map.slug) || slugify(cat.title || "");
-  const g = genderMap[cat.gender] || { label: "Unisex", path: "unisex" };
+  const slug  = (map && map.slug)  || slugify(cat.title || "");
+  const g = genderMap[cat.gender] || { label:"Unisex", path:"unisex" };
   return { label, slug, genderPath: g.path };
 };
 
@@ -75,6 +51,10 @@ export default function Header() {
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+
+  // user dropdown
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
 
   const location = useLocation();
   const history = useHistory();
@@ -91,15 +71,16 @@ export default function Header() {
 
   const categories = useSelector((s) => s.product?.categories || []);
   const catsWomen = categories.filter((c) => c.gender === "k");
-  const catsMen = categories.filter((c) => c.gender === "e");
+  const catsMen   = categories.filter((c) => c.gender === "e");
 
   const TOP_N = 5;
   const byRatingDesc = (a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0);
   const catsWomenTop = catsWomen.slice().sort(byRatingDesc).slice(0, TOP_N);
-  const catsMenTop = catsMen.slice().sort(byRatingDesc).slice(0, TOP_N);
+  const catsMenTop   = catsMen.slice().sort(byRatingDesc).slice(0, TOP_N);
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    setUserMenuOpen(false);
     history.push("/");
   };
 
@@ -108,10 +89,7 @@ export default function Header() {
   );
   const favCount = 0;
 
-  const topbarBg =
-    location.pathname.startsWith("/shop") || location.pathname.startsWith("/product")
-      ? "bg-[#23856D]"
-      : "bg-[#252B42]";
+  const topbarBg = "bg-[#252B42]";
 
   const closeTimer = useRef(null);
   const openShop = () => {
@@ -123,8 +101,22 @@ export default function Header() {
     closeTimer.current = setTimeout(() => setIsShopOpen(false), 160);
   };
   useEffect(() => () => closeTimer.current && clearTimeout(closeTimer.current), []);
-
   useEffect(() => setCartOpen(false), [location.pathname]);
+
+  useEffect(() => {
+    const onDoc = (e) => {
+      if (!userMenuRef.current) return;
+      if (!userMenuRef.current.contains(e.target)) setUserMenuOpen(false);
+    };
+    const onEsc = (e) => e.key === "Escape" && setUserMenuOpen(false);
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onEsc);
+    };
+  }, []);
+  useEffect(() => setUserMenuOpen(false), [location.pathname]);
 
   const fallbackItems = ["Bags", "Belts", "Cosmetics", "Shoes", "Hats"];
 
@@ -227,8 +219,14 @@ export default function Header() {
         <div className="flex items-center gap-4 text-[#252B42]">
           <div className="flex gap-2 items-center">
             {isAuthed ? (
-              <>
-                <Link to="/maintenance" className="flex gap-2 items-center" title={emailToShow}>
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setUserMenuOpen((p) => !p)}
+                  className="flex gap-2 items-center"
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
+                >
                   <img
                     src={avatarSrc(32)}
                     alt="User Avatar"
@@ -242,12 +240,41 @@ export default function Header() {
                     }}
                   />
                   <span className="hidden md:flex text-[#23A6F0] font-bold">{emailToShow}</span>
-                </Link>
-                <button type="button" onClick={handleLogout}
-                        className="hidden md:flex text-[#23A6F0] font-bold hover:underline">
-                  Logout
+                  <ChevronDown size={16} className="text-[#23A6F0]" />
                 </button>
-              </>
+
+                {userMenuOpen && (
+                  <div
+                    role="menu"
+                    className="absolute right-0 top-full mt-2 w-44 bg-white border rounded-md shadow-lg z-50 overflow-hidden"
+                  >
+                    <Link
+                      to="/account"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="block px-4 py-2 text-sm hover:bg-gray-50"
+                      role="menuitem"
+                    >
+                      Profilim
+                    </Link>
+                    <Link
+                      to="/orders"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="block px-4 py-2 text-sm hover:bg-gray-50"
+                      role="menuitem"
+                    >
+                      Siparişlerim
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+                      role="menuitem"
+                    >
+                      Çıkış
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
               <>
                 <Link to="/maintenance" className="flex gap-1 items-center "><CircleUserRound /></Link>
@@ -304,7 +331,12 @@ export default function Header() {
         <div className="flex items-center gap-5">
           {isAuthed ? (
             <>
-              <Link to="/maintenance" className="flex items-center" title={emailToShow}>
+              <button
+                type="button"
+                onClick={() => setIsMobileOpen((p) => !p)}
+                className="flex items-center"
+                title={emailToShow}
+              >
                 <img
                   src={avatarSrc(28)}
                   alt="User Avatar"
@@ -317,7 +349,7 @@ export default function Header() {
                     e.currentTarget.src = `https://ui-avatars.com/api/?name=${name}&size=28&background=23A6F0&color=fff`;
                   }}
                 />
-              </Link>
+              </button>
               <button type="button" onClick={handleLogout}
                       className="px-2 py-1 rounded bg-[#e53e3e] text-white text-xs font-bold">
                 Logout
@@ -356,6 +388,18 @@ export default function Header() {
           <Link to="/about"   onClick={() => setIsMobileOpen(false)} className={location.pathname === "/about" ? "text-[#252B42]" : ""}>About</Link>
           <Link to="/contact" onClick={() => setIsMobileOpen(false)} className={location.pathname === "/contact" ? "text-[#252B42]" : ""}>Contact</Link>
           <Link to="/pricing" onClick={() => setIsMobileOpen(false)} className={location.pathname === "/pricing" ? "text-[#252B42]" : ""}>Pricing</Link>
+
+          {isAuthed && (
+            <>
+              <Link to="/account" onClick={() => setIsMobileOpen(false)} className="text-[#23A6F0] font-bold">
+                Profilim
+              </Link>
+              <Link to="/orders" onClick={() => setIsMobileOpen(false)} className="text-[#23A6F0] font-bold">
+                Siparişlerim
+              </Link>
+            </>
+          )}
+
           {isAuthed && (
             <button type="button" onClick={() => { setIsMobileOpen(false); handleLogout(); }} className="text-[#23A6F0] font-bold">
               Logout

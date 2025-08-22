@@ -17,10 +17,7 @@ export default function Checkout() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { list, loading, shippingId, billingId } = useSelector(
-    (s) => s.address || {}
-  );
-
+  const { list, loading, shippingId, billingId } = useSelector((s) => s.address || {});
   const [sameBill, setSameBill] = useState(true);
   const [showFormFor, setShowFormFor] = useState(null);
   const [editItem, setEditItem] = useState(null);
@@ -116,16 +113,19 @@ export default function Checkout() {
                 {loading && <p className="text-sm text-[#737373]">Yükleniyor…</p>}
 
                 <div className="grid gap-3">
-                  {list.map((a) => (
-                    <AddressCard
-                      key={a.id}
-                      address={a}
-                      checked={a.id === shippingId}
-                      onSelect={(id) => dispatch(selectShipping(id))}
-                      onEdit={(addr) => handleEdit("edit-shipping", addr)}
-                      onDelete={(id) => dispatch(deleteAddress(id)).catch(() => {})}
-                    />
-                  ))}
+                  {list.map((a, idx) => {
+                    const keyVal = String(a?.id ?? idx);
+                    return (
+                      <AddressCard
+                        key={keyVal}
+                        address={a}
+                        checked={a.id === shippingId}
+                        onSelect={(id) => dispatch(selectShipping(id))}
+                        onEdit={(addr) => handleEdit("edit-shipping", addr)}
+                        onDelete={(id) => dispatch(deleteAddress(id)).catch(() => {})}
+                      />
+                    );
+                  })}
                 </div>
 
                 {showFormFor === "edit-shipping" && editItem && (
@@ -170,16 +170,19 @@ export default function Checkout() {
                   )}
 
                   <div className="grid gap-3">
-                    {list.map((a) => (
-                      <AddressCard
-                        key={a.id}
-                        address={a}
-                        checked={a.id === billingId}
-                        onSelect={(id) => dispatch(selectBilling(id))}
-                        onEdit={(addr) => handleEdit("edit-billing", addr)}
-                        onDelete={(id) => dispatch(deleteAddress(id)).catch(() => {})}
-                      />
-                    ))}
+                    {list.map((a, idx) => {
+                      const keyVal = String(a?.id ?? idx);
+                      return (
+                        <AddressCard
+                          key={keyVal}
+                          address={a}
+                          checked={a.id === billingId}
+                          onSelect={(id) => dispatch(selectBilling(id))}
+                          onEdit={(addr) => handleEdit("edit-billing", addr)}
+                          onDelete={(id) => dispatch(deleteAddress(id)).catch(() => {})}
+                        />
+                      );
+                    })}
                   </div>
 
                   {showFormFor === "edit-billing" && editItem && (
@@ -205,8 +208,7 @@ export default function Checkout() {
             <OrderSummary />
             <button
               type="button"
-              className="mt-4 w-full h-11 rounded bg-[#F97316] text-white font-semibold
-                         disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="mt-4 w-full h-11 rounded bg-[#F97316] text-white font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed"
               disabled={!canContinue}
               onClick={() => history.push("/checkout/payment")}
             >

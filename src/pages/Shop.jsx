@@ -1,4 +1,3 @@
-// src/pages/Shop.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -13,7 +12,7 @@ import LogoList from "../components/shop/Icons";
 
 export default function Shop() {
   const dispatch = useDispatch();
-  const { categoryId } = useParams(); // /shop/:gender/:categoryName/:categoryId
+  const { categoryId } = useParams(); 
 
   const {
     productList = [],
@@ -31,12 +30,10 @@ export default function Shop() {
   const offset = (page - 1) * limit;
   const catId = categoryId ? Number(categoryId) : undefined;
 
-  // Kategori değişince sayfa 1'e dön
   useEffect(() => {
     setPage(1);
   }, [categoryId]);
 
-  // Ürünleri çek
   useEffect(() => {
     dispatch(
       fetchProducts({

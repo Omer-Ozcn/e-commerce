@@ -1,8 +1,10 @@
-export const CARD_SET_LOADING = "card/SET_LOADING";
-export const CARD_SET_LIST    = "card/SET_LIST";
-export const CARD_UPSERT      = "card/UPSERT";
-export const CARD_REMOVE      = "card/REMOVE";
-export const CARD_SELECT_ID   = "card/SELECT_ID";
+import {
+  CARD_SET_LOADING,
+  CARD_SET_LIST,
+  CARD_UPSERT,
+  CARD_REMOVE,
+  CARD_SELECT_ID,
+} from "./types";
 
 export const setCardLoading = (bool) => ({ type: CARD_SET_LOADING, payload: !!bool });
 export const setCardList    = (list) => ({ type: CARD_SET_LIST, payload: Array.isArray(list) ? list : [] });

@@ -9,8 +9,10 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import CartPage from "../pages/CartPage";
 import Checkout from "../pages/Checkout";
-import CheckoutPayment from "../pages/CheckoutPayment"; // <-- EKLENDİ
+import CheckoutPayment from "../pages/CheckoutPayment"; // <—
 import ProtectedRoute from "./ProtectedRoute";
+import Orders from "../pages/Orders";
+import Account from "../pages/Account";
 
 export default function PageContent() {
   return (
@@ -27,14 +29,20 @@ export default function PageContent() {
 
       <Route path="/cart"><CartPage /></Route>
 
-      {/* ÖDEME ADIMI */}
       <ProtectedRoute path="/checkout/payment">
         <CheckoutPayment />
       </ProtectedRoute>
 
-      {/* ADRES ADIMI */}
       <ProtectedRoute exact path="/checkout">
         <Checkout />
+      </ProtectedRoute>
+
+      <ProtectedRoute path="/orders">
+        <Orders />
+      </ProtectedRoute>
+
+      <ProtectedRoute path="/account">
+        <Account />
       </ProtectedRoute>
 
       <Route path="/contact"><Contact /></Route>

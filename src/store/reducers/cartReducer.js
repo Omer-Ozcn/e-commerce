@@ -1,22 +1,12 @@
 import { SET_CART, SET_PAYMENT, SET_ADDRESS } from "../actions/types";
 
-const initialState = {
-  cart: [],      
-  payment: {},
-  address: {},
-};
+const initialState = { cart: [], payment: {}, address: {} };
 
-function cartReducer(state = initialState, action) {
+export default function cartReducer(state = initialState, action) {
   switch (action.type) {
-    case SET_CART:
-      return { ...state, cart: action.payload };
-    case SET_PAYMENT:
-      return { ...state, payment: action.payload };
-    case SET_ADDRESS:
-      return { ...state, address: action.payload };
-    default:
-      return state;
+    case SET_CART:     return { ...state, cart: action.payload };
+    case SET_PAYMENT:  return { ...state, payment: action.payload };
+    case SET_ADDRESS:  return { ...state, address: action.payload };
+    default:           return state;
   }
 }
-
-export default cartReducer; 

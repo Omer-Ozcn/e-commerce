@@ -11,7 +11,7 @@ import product from "./reducers/productReducer";
 import cart from "./reducers/cartReducer";
 import user from "./reducers/userReducer";
 import address from "./reducers/addressReducer";
-import card from "./reducers/cardReducer"; // ✅ default import
+import card from "./reducers/cardReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&

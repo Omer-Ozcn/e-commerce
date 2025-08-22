@@ -10,6 +10,5 @@ export const upsertAddress     = (addr) => ({ type: UPSERT_ADDRESS, payload: add
 export const removeAddress     = (id)   => ({ type: REMOVE_ADDRESS, payload: id });
 export const setSelectedIds    = (obj)  => ({ type: SET_SELECTED_IDS, payload: obj });
 
-// seçili id helper’ları
 export const selectShipping = (id) => setSelectedIds({ shippingId: id });
 export const selectBilling  = (id) => setSelectedIds({ billingId:  id });

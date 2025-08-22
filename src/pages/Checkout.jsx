@@ -1,6 +1,6 @@
-// src/pages/Checkout.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import Breadcrumb from "../components/common/Breadcrumb";
 import OrderSummary from "../components/cart/OrderSummary";
 import AddressCard from "../components/address/AddressCard";
@@ -15,21 +15,20 @@ import { selectBilling, selectShipping } from "../store/actions/addressActions";
 
 export default function Checkout() {
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  // reducer alan adlarıyla birebir
   const { list, loading, shippingId, billingId } = useSelector(
     (s) => s.address || {}
   );
 
   const [sameBill, setSameBill] = useState(true);
-  const [showFormFor, setShowFormFor] = useState(null); // "new-shipping" | "edit-shipping" | "new-billing" | "edit-billing"
+  const [showFormFor, setShowFormFor] = useState(null);
   const [editItem, setEditItem] = useState(null);
 
   useEffect(() => {
     dispatch(fetchAddresses()).catch(() => {});
   }, [dispatch]);
 
-  // Fatura aynı adrese gönder ayarı
   useEffect(() => {
     if (sameBill) dispatch(selectBilling(shippingId));
   }, [sameBill, shippingId, dispatch]);
@@ -58,7 +57,6 @@ export default function Checkout() {
       const saved = await dispatch(addAddress(data));
       const id = saved?.id;
 
-      // yeni ekleneni seçili yap
       if (id) {
         if (showFormFor === "new-shipping" || showFormFor === "edit-shipping") {
           dispatch(selectShipping(id));
@@ -85,12 +83,13 @@ export default function Checkout() {
     }
   };
 
+  const canContinue = !!shippingId && (sameBill || !!billingId);
+
   return (
     <main className="bg-[#FAFAFA] min-h-[60vh]">
       <Breadcrumb title="Sipariş Oluştur" />
 
       <section className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-[1fr,320px] gap-6">
-        {/* SOL: Adresler */}
         <div className="lg:pr-2">
           <div className="bg-white border rounded-lg">
             <div className="px-5 py-4 border-b">
@@ -98,7 +97,6 @@ export default function Checkout() {
             </div>
 
             <div className="p-5 space-y-6">
-              {/* Teslimat Adresi */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-[#252B42]">Teslimat Adresi</h3>
@@ -144,7 +142,6 @@ export default function Checkout() {
                 )}
               </div>
 
-              {/* Fatura aynı adrese mi? */}
               <label className="inline-flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
@@ -155,7 +152,6 @@ export default function Checkout() {
                 Faturamı Aynı Adrese Gönder
               </label>
 
-              {/* Fatura Adresi (ayrı ise) */}
               {!sameBill && (
                 <div className="pt-2">
                   <div className="flex items-center justify-between mb-2">
@@ -202,26 +198,17 @@ export default function Checkout() {
               )}
             </div>
           </div>
-
-          {/* 2. adım (placeholder) */}
-          <div className="bg-white border rounded-lg mt-6">
-            <div className="px-5 py-4 border-b">
-              <h2 className="text-xl font-bold text-[#252B42]">2. Ödeme Seçenekleri</h2>
-            </div>
-            <div className="p-5 text-[#737373]">
-              Ödeme adımı bir sonraki görevde yapılacak. (Kart / Havale vs.)
-            </div>
-          </div>
         </div>
 
-        {/* SAĞ: Sipariş Özeti */}
         <div className="lg:pl-2">
           <div className="lg:sticky lg:top-24">
             <OrderSummary />
             <button
               type="button"
-              className="mt-4 w-full h-11 rounded bg-[#F97316] text-white font-semibold"
-              onClick={() => alert("Ödeme adımı sonraki görevde yapılacak.")}
+              className="mt-4 w-full h-11 rounded bg-[#F97316] text-white font-semibold
+                         disabled:bg-gray-300 disabled:cursor-not-allowed"
+              disabled={!canContinue}
+              onClick={() => history.push("/checkout/payment")}
             >
               Kaydet ve Devam Et
             </button>

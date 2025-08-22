@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     dispatch(initAuth());
     dispatch(fetchCategoriesIfNeeded());
-    dispatch(loadCartFromStorage()); // ⬅️ sepeti localStorage'dan yükle
+    dispatch(loadCartFromStorage()); 
   }, [dispatch]);
 
   return (

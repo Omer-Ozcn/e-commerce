@@ -1,56 +1,63 @@
+import axiosInstance from "../../api/axiosInstance";
 import {
-  CARD_SET_LOADING,
-  CARD_SET_LIST,
-  CARD_UPSERT,
-  CARD_REMOVE,
-  CARD_SELECT_ID,
+  setCardLoading,
+  setCardList,
+  upsertCard,
+  removeCard,
 } from "../actions/cardActions";
 
-const initial = {
-  list: [],
-  loading: false,
-  selectedId: null,
+const authHeaders = (getState) => {
+  const token = getState()?.user?.token || localStorage.getItem("token");
+  return token ? { Authorization: token } : {};
 };
 
-// 🔥 Default export ŞART
-export default function card(state = initial, action) {
-  switch (action.type) {
-    case CARD_SET_LOADING:
-      return { ...state, loading: !!action.payload };
-
-    case CARD_SET_LIST: {
-      const list = Array.isArray(action.payload) ? action.payload : [];
-      const first = list[0]?.id ?? null;
-      return { ...state, list, selectedId: state.selectedId ?? first };
-    }
-
-    case CARD_UPSERT: {
-      const c = action.payload || {};
-      const exists = state.list.some((x) => String(x.id) === String(c.id));
-      const next = exists
-        ? state.list.map((x) => (String(x.id) === String(c.id) ? { ...x, ...c } : x))
-        : [...state.list, c];
-      return {
-        ...state,
-        list: next,
-        selectedId: state.selectedId ?? c.id ?? next[0]?.id ?? null,
-      };
-    }
-
-    case CARD_REMOVE: {
-      const id = action.payload;
-      const next = state.list.filter((x) => String(x.id) !== String(id));
-      return {
-        ...state,
-        list: next,
-        selectedId: String(state.selectedId) === String(id) ? next[0]?.id ?? null : state.selectedId,
-      };
-    }
-
-    case CARD_SELECT_ID:
-      return { ...state, selectedId: action.payload };
-
-    default:
-      return state;
+export const fetchCards = () => async (dispatch, getState) => {
+  try {
+    dispatch(setCardLoading(true));
+    const res = await axiosInstance.get("/user/card", { headers: authHeaders(getState) });
+    const data = Array.isArray(res?.data) ? res.data : [];
+    dispatch(setCardList(data));
+    return data;
+  } catch (e) {
+    dispatch(setCardList([]));
+    console.error("fetchCards failed:", e);
+    throw e;
+  } finally {
+    dispatch(setCardLoading(false));
   }
-}
+};
+
+export const createCard = (payload) => async (dispatch, getState) => {
+  try {
+    const res = await axiosInstance.post("/user/card", payload, { headers: authHeaders(getState) });
+    const saved = res?.data || payload;
+    dispatch(upsertCard(saved));
+    return saved;
+  } catch (e) {
+    console.error("createCard failed:", e);
+    throw e;
+  }
+};
+
+export const updateCard = (payload) => async (dispatch, getState) => {
+  try {
+    const res = await axiosInstance.put("/user/card", payload, { headers: authHeaders(getState) });
+    const saved = res?.data || payload;
+    dispatch(upsertCard(saved));
+    return saved;
+  } catch (e) {
+    console.error("updateCard failed:", e);
+    throw e;
+  }
+};
+
+export const deleteCard = (id) => async (dispatch, getState) => {
+  try {
+    await axiosInstance.delete(`/user/card/${id}`, { headers: authHeaders(getState) });
+    dispatch(removeCard(id));
+    return true;
+  } catch (e) {
+    console.error("deleteCard failed:", e);
+    throw e;
+  }
+};

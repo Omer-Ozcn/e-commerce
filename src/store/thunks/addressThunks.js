@@ -7,8 +7,8 @@ import {
 } from "../actions/addressActions";
 
 const authHeaders = (getState) => {
-  const token = getState()?.user?.token || localStorage.getItem("token");
-  return token ? { Authorization: `Bearer ${token}` } : {};
+   const token = getState()?.user?.token || localStorage.getItem("token");
+   return token ? { Authorization: token } : {};
 };
 
 export const fetchAddresses = () => async (dispatch, getState) => {
@@ -35,7 +35,7 @@ export const createAddress = (payload) => async (dispatch, getState) => {
     });
     const saved = res?.data || payload;
     dispatch(upsertAddress(saved));
-    return saved; // ← çağıran yere dön
+    return saved; 
   } catch (e) {
     console.error("createAddress failed:", e);
     throw e;
@@ -69,5 +69,5 @@ export const deleteAddress = (id) => async (dispatch, getState) => {
   }
 };
 
-// “addAddress” diye import eden yerler için alias:
+
 export const addAddress = createAddress;

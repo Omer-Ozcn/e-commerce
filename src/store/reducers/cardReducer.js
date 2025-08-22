@@ -1,5 +1,9 @@
 import {
-  CARD_SET_LOADING, CARD_SET_LIST, CARD_UPSERT, CARD_REMOVE, CARD_SELECT_ID,
+  CARD_SET_LOADING,
+  CARD_SET_LIST,
+  CARD_UPSERT,
+  CARD_REMOVE,
+  CARD_SELECT_ID,
 } from "../actions/cardActions";
 
 const initial = {
@@ -29,7 +33,7 @@ export default function card(state = initial, action) {
       const next = exists
         ? state.list.map((x) => (String(x.id) === String(c.id) ? { ...x, ...c } : x))
         : [...state.list, c];
-      return { ...state, list: next, selectedId: state.selectedId ?? c.id ?? next[0]?.id ?? null };
+      return { ...state, list: next, selectedId: state.selectedId ?? c.id ?? null };
     }
 
     case CARD_REMOVE: {

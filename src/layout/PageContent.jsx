@@ -9,6 +9,7 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import CartPage from "../pages/CartPage";
 import Checkout from "../pages/Checkout";
+import CheckoutPayment from "../pages/CheckoutPayment"; // <-- EKLENDİ
 import ProtectedRoute from "./ProtectedRoute";
 
 export default function PageContent() {
@@ -26,8 +27,13 @@ export default function PageContent() {
 
       <Route path="/cart"><CartPage /></Route>
 
-      {/* Korumalı adres/checkout sayfası */}
-      <ProtectedRoute path="/checkout">
+      {/* ÖDEME ADIMI */}
+      <ProtectedRoute path="/checkout/payment">
+        <CheckoutPayment />
+      </ProtectedRoute>
+
+      {/* ADRES ADIMI */}
+      <ProtectedRoute exact path="/checkout">
         <Checkout />
       </ProtectedRoute>
 

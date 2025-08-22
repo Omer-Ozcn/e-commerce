@@ -10,9 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { initAuth } from "./store/actions/userActions";
+import { initAuth } from "./store/thunks/userThunks";
 import { fetchCategoriesIfNeeded } from "./store/thunks/categoryThunks";
-import { loadCartFromStorage } from "./store/thunks/cartThunks"; // ⬅️ eklendi
+import { loadCartFromStorage } from "./store/thunks/cartThunks"; 
 
 function App() {
   const dispatch = useDispatch();

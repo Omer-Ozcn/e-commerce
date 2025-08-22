@@ -3,7 +3,7 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
-import { loginUser } from "../store/actions/userActions";
+import { login } from "../store/thunks/userThunks";
 
 export default function Login() {
   const history = useHistory();
@@ -23,7 +23,7 @@ export default function Login() {
   const onSubmit = (values) => {
     const { email, password, remember } = values;
 
-    return dispatch(loginUser({ email, password, rememberMe: remember }))
+    return dispatch(login(email, password))
       .then((res) => {
         const who =
           res?.user?.name || res?.user?.email || email || "";

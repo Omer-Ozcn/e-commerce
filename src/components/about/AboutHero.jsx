@@ -40,11 +40,16 @@ export default function AboutHero() {
 
           <img
             src="/about/abouthero.jpg"
-            alt="About hero"
-            className="absolute left-1/2 -translate-x-1/2 object-cover
-                       w-[375.73px] h-[439.19px]
-                       md:w-[571px] md:h-[668px] md:top-[-56px] md:object-contain"
+            alt="technology"
+            className="
+              absolute select-none pointer-events-none object-contain
+              /* mobile */
+              left-1/2 -translate-x-1/2 top-0 w-[375.73px] h-[439.19px]
+              /* desktop */
+              md:left-[34px] md:translate-x-0 md:top-[-56px] md:w-[571px] md:h-[668px]
+            "
           />
+
         </div>
       </div>
     </section>

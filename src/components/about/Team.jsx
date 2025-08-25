@@ -1,21 +1,10 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const teamMembers = [
-  {
-    name: "Gökhan Özdemir",
-    role: "Project Manager",
-    image: "/team/team1.jpg",
-  },
-  {
-    name: "Ömer Özcan",
-    role: "Full Stack Developer",
-    image: "/team/team2.jpg",
-  },
-  {
-    name: "Username",
-    role: "Profession",
-    image: "/team/team3.jpg",
-  },
+  { name: "Gökhan Özdemir", role: "Project Manager",       image: "/team/team1.jpg" },
+  { name: "Ömer Özcan",     role: "Full Stack Developer",  image: "/team/team2.jpg" },
+  { name: "Username",       role: "Profession",            image: "/team/team3.jpg" },
 ];
 
 export default function Team() {
@@ -31,6 +20,14 @@ export default function Team() {
           <p className="font-[Montserrat] text-[14px] leading-[20px] text-[#737373] tracking-[0.2px] max-w-[469px]">
             Problems trying to resolve the conflict between the two major realms of Classical physics: Newtonian mechanics
           </p>
+
+          {/* CTA: Team sayfasına yönlendir */}
+          <Link
+            to="/team"
+            className="mt-4 inline-flex h-[44px] px-6 items-center justify-center rounded-md bg-[#23A6F0] text-white font-[Montserrat] font-bold text-[14px] tracking-[0.2px] hover:bg-[#1c7ab1] transition"
+          >
+            Tüm Ekibi Gör
+          </Link>
         </div>
 
         {/* Kartlar */}
@@ -38,11 +35,7 @@ export default function Team() {
           {teamMembers.map((member, index) => (
             <div key={index} className="flex flex-col items-center bg-white w-[329px] md:w-[316px]">
               <div className="w-full h-[231px]">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-full h-full object-cover"
-                />
+                <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
               </div>
 
               <div className="flex flex-col items-center p-[30px] gap-[10px]">
@@ -54,8 +47,8 @@ export default function Team() {
                 </h6>
                 <div className="flex gap-[20px] pt-[10px]">
                   <FaFacebookF className="w-6 h-6 text-[#335BF5]" />
-                  <FaInstagram className="w-6 h-6 text-[#E61F5A]" />
-                  <FaTwitter className="w-6 h-6 text-[#21A6DF]" />
+                  <FaInstagram  className="w-6 h-6 text-[#E61F5A]" />
+                  <FaTwitter    className="w-6 h-6 text-[#21A6DF]" />
                 </div>
               </div>
             </div>

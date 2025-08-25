@@ -14,6 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Orders from "../pages/Orders";
 import Account from "../pages/Account";
 import Pricing from "../pages/Pricing";
+import Team from "../pages/Team";
 
 export default function PageContent() {
   return (
@@ -50,6 +51,7 @@ export default function PageContent() {
       <Route path="/about"><About /></Route>
       <Route path="/blog"><Blog /></Route>
       <Route path="/pricing"><Pricing /></Route>
+      <Route path="/team"><Team /></Route>
 
       <Redirect to="/" />
     </Switch>

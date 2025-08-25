@@ -49,13 +49,16 @@ const PLANS = [
 ];
 
 function PlanCard({ plan, cycle }) {
-  // yearly fiyatı yoksa %25 indirimli aylık üzerinden göster
+  // %25 indirimli yıllık (aylık bazda) gösterim
   const price = useMemo(() => {
     if (cycle === "monthly") return plan.monthly;
     return Number((plan.monthly * 0.75).toFixed(2));
   }, [plan, cycle]);
 
   const isDark = plan.popular;
+
+  // H6 tipografisi (Montserrat varsayılarak)
+  const H6 = "text-[14px] leading-6 tracking-[0.2px] font-bold";
 
   return (
     <div
@@ -65,12 +68,14 @@ function PlanCard({ plan, cycle }) {
         isDark ? "bg-[#23303F] text-white border-transparent" : "bg-white border-slate-200",
       ].join(" ")}
     >
-
+      {/* Üst kısım */}
       <div className="p-6 text-center font-[Montserrat]">
-        <div className={`text-sm font-extrabold tracking-wide ${isDark ? "text-white/90" : "text-[#252B42]"}`}>
+        <div className={`${H6} ${isDark ? "text-white" : "text-[#252B42]"} uppercase`}>
           {plan.name}
         </div>
-        <p className={`mt-2 text-xs ${isDark ? "text-white/70" : "text-[#737373]"}`}>{plan.tagline}</p>
+        <p className={`mt-2 text-xs ${isDark ? "text-white/70" : "text-[#737373]"}`}>
+          {plan.tagline}
+        </p>
 
         <div className="mt-6 flex items-end justify-center gap-2">
           <span className={`text-4xl font-extrabold ${isDark ? "text-white" : "text-[#252B42]"}`}>
@@ -78,23 +83,34 @@ function PlanCard({ plan, cycle }) {
           </span>
           <span className="text-[#23A6F0] font-bold mb-1">$</span>
         </div>
-        <div className={`text-xs mt-1 ${isDark ? "text-white/70" : "text-[#737373]"}`}>Per Month</div>
+        <div className={`text-xs mt-1 ${isDark ? "text-white/70" : "text-[#737373]"}`}>
+          Per Month
+        </div>
       </div>
 
+      {/* Özellikler */}
       <ul className={`px-6 pb-4 ${isDark ? "text-white/90" : "text-[#252B42]"} text-sm`}>
         {plan.features.map(([label, ok], i) => (
-          <li key={i} className="flex items-start gap-3 py-2">
+          <li key={i} className="flex items-start gap-3 py-2 font-[Montserrat]">
             {ok ? (
-              <Check className={`mt-0.5 w-5 h-5 ${isDark ? "text-[#2DC071]" : "text-[#2DC071]"}`} />
+              <Check className="mt-0.5 w-5 h-5 text-[#2DC071]" />
             ) : (
               <X className={`mt-0.5 w-5 h-5 ${isDark ? "text-white/30" : "text-gray-300"}`} />
             )}
-            <span className={ok ? "" : "line-through text-gray-400"}>{label}</span>
+            <span
+              className={[
+                H6,
+                ok ? (isDark ? "text-white" : "text-[#252B42]") : "line-through text-gray-400",
+              ].join(" ")}
+            >
+              {label}
+            </span>
           </li>
         ))}
       </ul>
 
-      <div className={`p-6`}>
+      {/* CTA */}
+      <div className="p-6">
         <button
           className={[
             "w-full h-11 rounded-lg font-bold transition",
@@ -151,17 +167,14 @@ export default function PricingSection() {
 
         {/* Kartlar */}
         <div className="mt-10 grid md:grid-cols-3 gap-6">
-          {/* Sol kart */}
           <div className="md:mt-6">
             <PlanCard plan={PLANS[0]} cycle={cycle} />
           </div>
 
-          {/* Orta (vurgu) */}
-          <div className="">
+          <div>
             <PlanCard plan={PLANS[1]} cycle={cycle} />
           </div>
 
-          {/* Sağ kart */}
           <div className="md:mt-6">
             <PlanCard plan={PLANS[2]} cycle={cycle} />
           </div>

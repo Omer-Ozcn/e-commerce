@@ -13,6 +13,7 @@ import CheckoutPayment from "../pages/CheckoutPayment"; // <—
 import ProtectedRoute from "./ProtectedRoute";
 import Orders from "../pages/Orders";
 import Account from "../pages/Account";
+import Pricing from "../pages/Pricing";
 
 export default function PageContent() {
   return (
@@ -48,6 +49,7 @@ export default function PageContent() {
       <Route path="/contact"><Contact /></Route>
       <Route path="/about"><About /></Route>
       <Route path="/blog"><Blog /></Route>
+      <Route path="/pricing"><Pricing /></Route>
 
       <Redirect to="/" />
     </Switch>

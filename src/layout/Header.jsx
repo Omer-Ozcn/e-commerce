@@ -52,7 +52,6 @@ export default function Header() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
-  // user dropdown
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
 
@@ -138,9 +137,9 @@ export default function Header() {
 
       <div className="hidden md:flex justify-between items-baseline px-10 py-5 shadow-md">
         <div className="flex items-baseline gap-20">
-          <Link className="text-2xl font-bold text-[#252B42] leading-[1.2]" to="/">Bandage</Link>
+          <Link className="text-2xl font-bold text-[#252B42] font-[Montserrat] leading-[1.2]" to="/">Bandage</Link>
 
-          <nav className="flex items-center gap-6 text-[#737373] text-sm font-bold">
+          <nav className="flex items-center gap-6 text-[#737373] text-sm font-bold font-[Montserrat]">
             <Link to="/" className={location.pathname === "/" ? "font-normal" : ""}>Home</Link>
 
             <div className="relative" onMouseEnter={openShop} onMouseLeave={scheduleClose}>

@@ -4,8 +4,7 @@ import {
   combineReducers,
   compose,
 } from "redux";
-import { thunk } from "redux-thunk"; // Thunk v3+ için doğru
-
+import { thunk } from "redux-thunk"; 
 import client from "./reducers/clientReducer";
 import product from "./reducers/productReducer";
 import cart from "./reducers/cartReducer";
@@ -13,6 +12,7 @@ import user from "./reducers/userReducer";
 import address from "./reducers/addressReducer";
 import card from "./reducers/cardReducer";
 import order from "./reducers/orderReducer";
+import favorites from "./reducers/favoritesReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -26,6 +26,7 @@ const rootReducer = combineReducers({
   address,
   card,
   order,
+  favorites,
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

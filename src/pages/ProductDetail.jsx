@@ -1,3 +1,4 @@
+// src/pages/ProductDetail.jsx
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,13 +8,13 @@ import { fetchProductById } from "../store/thunks/productThunks";
 import Breadcrumb from "../components/common/Breadcrumb";
 import ProductGallery from "../components/productdetail/ProductGallery";
 import ProductInfo from "../components/productdetail/ProductInfo";
-import ActionBar from "../components/productdetail/ActionBar";
+import ActionBar from "../components/productdetail/ActionBar"; // ← DOĞRU ACTIONBAR
 import ProductDescription from "../components/productdetail/ProductDescription";
 import BestsellerProducts from "../components/productdetail/BestSellerProducts";
 import LogoList from "../components/shop/Icons";
 
-import { addToCart } from "../store/thunks/cartThunks";      
-import { toast } from "react-toastify";                     
+import { addToCart } from "../store/thunks/cartThunks";
+import { toast } from "react-toastify";
 
 export default function ProductDetail() {
   const { productId: pidA, id: pidB } = useParams();
@@ -27,6 +28,7 @@ export default function ProductDetail() {
     if (productId && (!product || String(product.id) !== String(productId))) {
       dispatch(fetchProductById(productId));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, productId]);
 
   if (!product || loading || String(product.id) !== String(productId)) {
@@ -46,7 +48,9 @@ export default function ProductDetail() {
           <ProductGallery product={product} />
           <div className="flex flex-col gap-6">
             <ProductInfo product={product} />
+
             <ActionBar
+              product={product}            // ← FAVORİ İÇİN ZORUNLU
               className="mt-2"
               onAddToCart={() => {
                 dispatch(addToCart(product, 1));

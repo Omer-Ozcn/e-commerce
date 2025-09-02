@@ -15,6 +15,7 @@ import Orders from "../pages/Orders";
 import Account from "../pages/Account";
 import Pricing from "../pages/Pricing";
 import Team from "../pages/Team";
+import FavoritesPage from "../pages/Favorites";
 
 export default function PageContent() {
   return (
@@ -52,6 +53,7 @@ export default function PageContent() {
       <Route path="/blog"><Blog /></Route>
       <Route path="/pricing"><Pricing /></Route>
       <Route path="/team"><Team /></Route>
+      <Route path="/favorites" component={FavoritesPage} />
 
       <Redirect to="/" />
     </Switch>

@@ -30,3 +30,7 @@ export const ORDER_CREATE_FAIL    = "order/CREATE_FAIL";
 export const ORDER_LIST_START   = "order/LIST_START";
 export const ORDER_LIST_SUCCESS = "order/LIST_SUCCESS";
 export const ORDER_LIST_FAIL    = "order/LIST_FAIL";
+
+export const FAV_ADD = "favorites/ADD";
+export const FAV_REMOVE = "favorites/REMOVE";
+export const FAV_CLEAR = "favorites/CLEAR";

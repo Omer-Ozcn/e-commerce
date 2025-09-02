@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import md5 from "md5";
 import { logoutUser } from "../store/actions/userActions";
 import CartDropdown from "../components/cart/CartDropdown";
+import FavDropdown from "../components/favorites/FavDropdown";
 
 const slugify = (s = "") =>
   s.toString().trim().toLowerCase().normalize("NFD")
@@ -51,6 +52,7 @@ export default function Header() {
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [favOpen, setFavOpen] = useState(false);
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
@@ -86,7 +88,7 @@ export default function Header() {
   const cartCount = useSelector((s) =>
     (s.cart?.cart || []).reduce((sum, it) => sum + (Number(it.count) || 1), 0)
   );
-  const favCount = 0;
+  const favCount = useSelector((s) => (s.favorites?.items || []).length);
 
   const topbarBg = "bg-[#252B42]";
 
@@ -99,15 +101,22 @@ export default function Header() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(() => setIsShopOpen(false), 160);
   };
+
   useEffect(() => () => closeTimer.current && clearTimeout(closeTimer.current), []);
-  useEffect(() => setCartOpen(false), [location.pathname]);
+  useEffect(() => { setCartOpen(false); setFavOpen(false); }, [location.pathname]);
 
   useEffect(() => {
     const onDoc = (e) => {
       if (!userMenuRef.current) return;
       if (!userMenuRef.current.contains(e.target)) setUserMenuOpen(false);
     };
-    const onEsc = (e) => e.key === "Escape" && setUserMenuOpen(false);
+    const onEsc = (e) => {
+      if (e.key === "Escape") {
+        setUserMenuOpen(false);
+        setFavOpen(false);
+        setCartOpen(false);
+      }
+    };
     document.addEventListener("mousedown", onDoc);
     document.addEventListener("keydown", onEsc);
     return () => {
@@ -115,7 +124,6 @@ export default function Header() {
       document.removeEventListener("keydown", onEsc);
     };
   }, []);
-  useEffect(() => setUserMenuOpen(false), [location.pathname]);
 
   const fallbackItems = ["Bags", "Belts", "Cosmetics", "Shoes", "Hats"];
 
@@ -135,11 +143,12 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Desktop navbar */}
       <div className="hidden md:flex justify-between items-baseline px-10 py-5 shadow-md">
         <div className="flex items-baseline gap-20">
-          <Link className="text-2xl font-bold text-[#252B42] font-[Montserrat] leading-[1.2]" to="/">Bandage</Link>
+          <Link className="text-2xl font-bold text-[#252B42]" to="/">Bandage</Link>
 
-          <nav className="flex items-center gap-6 text-[#737373] text-sm font-bold font-[Montserrat]">
+          <nav className="flex items-center gap-6 text-[#737373] text-sm font-bold">
             <Link to="/" className={location.pathname === "/" ? "font-normal" : ""}>Home</Link>
 
             <div className="relative" onMouseEnter={openShop} onMouseLeave={scheduleClose}>
@@ -288,7 +297,7 @@ export default function Header() {
 
           <div className="relative hidden md:block">
             <button
-              onClick={() => setCartOpen((p) => !p)}
+              onClick={() => { setCartOpen((p) => !p); setFavOpen(false); }}
               className="flex gap-1 items-center cursor-pointer"
               aria-expanded={cartOpen}
               title="Cart"
@@ -299,12 +308,19 @@ export default function Header() {
             {cartOpen && <CartDropdown onClose={() => setCartOpen(false)} />}
           </div>
 
-          <Link to="/cart" className="relative md:hidden" aria-label="Cart">
-            <ShoppingCart className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-              {cartCount > 99 ? "99+" : cartCount}
-            </span>
-          </Link>
+          <div className="relative hidden md:flex gap-1 items-center">
+            <button
+              type="button"
+              onClick={() => { setFavOpen((p) => !p); setCartOpen(false); }}
+              className="flex items-center gap-1 cursor-pointer"
+              aria-expanded={favOpen}
+              title="Favorites"
+            >
+              <Heart />
+              <span>{favCount}</span>
+            </button>
+            {favOpen && <FavDropdown onClose={() => setFavOpen(false)} />}
+          </div>
 
           <button
             type="button"
@@ -316,12 +332,6 @@ export default function Header() {
           >
             <Menu className="w-7 h-7" />
           </button>
-
-          <div className="relative hidden md:flex gap-1 items-center">
-            <button type="button" className="flex items-center gap-1 cursor-pointer " title="Favorites">
-              <Heart /><span>{favCount}</span>
-            </button>
-          </div>
         </div>
       </div>
 
@@ -367,6 +377,15 @@ export default function Header() {
             </span>
           </Link>
 
+          <Link to="/favorites" className="relative" aria-label="Favorites">
+            <Heart className="w-6 h-6" />
+            {favCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-[#23A6F0] text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                {favCount > 99 ? "99+" : favCount}
+              </span>
+            )}
+          </Link>
+
           <button
             type="button"
             onClick={() => setIsMobileOpen((p) => !p)}
@@ -380,6 +399,7 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Mobile nav list */}
       {isMobileOpen && (
         <nav id="mobile-nav" className="md:hidden flex flex-col items-center justify-center gap-6 py-10 text-[#737373] text-xl font-semibold">
           <Link to="/"        onClick={() => setIsMobileOpen(false)} className={location.pathname === "/" ? "text-[#252B42]" : ""}>Home</Link>
